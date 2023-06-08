@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <title>Firmex</title>
+
+</head>
+<body>
+<div class="nav">
+    <div class="logo">
+        <img src="../static/img/logo.png" alt="logo" class="company-logo">
+    </div>
+    <div>
+        <button class="category">Kategorie</button>
+    </div>
+    <div class="searcher-container">
+        <form>
+            <input class="searcher-input " type="search" placeholder="Search">
+        </form>
+    </div>
+    <div class="account">
+        <img src="../static/img/user.png" alt="user" class="account-icon">
+    </div>
+</div>
+{% block content %}
+<div class="content">
+    <p class="popular"> Najpopularniejsze </p>
+    <div class="company-container">
+     {%  for company in companies %}
+        <div class="company-field">
+        <p class="company-content"> <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo"> &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20;  {{ company.opinions }}  &#20;  </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+<div class="footer">
+        <p class="footer-content">Footer</p>
+</div>
+</body>
+</html>
