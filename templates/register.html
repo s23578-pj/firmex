@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="../static/styles/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Firmex</title>
+
+</head>
+<body>
+{% block nav %}
+<div class="nav">
+    <div class="logo">
+        <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
+    </div>
+    <div>
+        <button class="category">Kategorie</button>
+    </div>
+    <div class="searcher-container">
+        <form>
+            <input class="searcher-input " type="search" placeholder="Search">
+        </form>
+    </div>
+    <div class="current-user">
+    {% if current_user.is_authenticated %}
+        <span>Welcome, {{ current_user.nickName }}</span>
+    {% endif %}
+</div>
+    <div class="account">
+        <img src="../static/img/user.png" alt="user" class="account-icon">
+    </div>
+     <div id="account-dropdown" class="account-dropdown">
+        <div class="dropdown-content">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
+                <a href="#" class="account-button">Konto</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
+                <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.account').click(function () {
+            $('#account-dropdown').toggle();
+        });
+    });
+</script>
+{% endblock %}
+<div class="login-content">
+    <p class="title-register"> Rejestracja </p>
+    <div class="form-container">
+        <form action="{{ url_for('register') }}" method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.name(class="form-control", placeholder="Imię") }}
+                {% for error in form.name.errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.surname(class="form-control", placeholder="Nazwisko") }}
+                {% for error in form.surname.errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.email(class="form-control", placeholder="Email") }}
+                {% for error in form.email.errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.password(class="form-control", placeholder="Hasło") }}
+                {% for error in form.password.errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.confirmPassword(class="form-control", placeholder="Powtórz hasło") }}
+                {% for error in form.confirmPassword.errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.nickName(class="form-control", placeholder="Nazwa użytkownika") }}
+                {% for error in form.nickName.errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+        <div class="form-group">
+    {{ form.checkbox(class="form-check-input") }}
+    <label class="form-check-label" for="{{ form.checkbox.id }}">{{ form.checkbox.label.text }}</label>
+    {% for error in form.checkbox.errors %}
+        <p class="error-message">{{ error }}</p>
+    {% endfor %}
+</div>
+            <button type="submit" class="register_button">Zarejestruj się</button>
+        </form>
+
+    </div>
+    <a class="go-login" href="/login"> Masz już konto? Zaloguj się!</a>
+</div>
+<div class="footer">
+    <p class="footer-content">Footer</p>
+
+</div>
+</body>
+</html>

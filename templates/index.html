@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Firmex</title>
 
 </head>
 <body>
+{% block nav %}
 <div class="nav">
     <div class="logo">
-        <img src="../static/img/logo.png" alt="logo" class="company-logo">
+        <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
     </div>
     <div>
         <button class="category">Kategorie</button>
@@ -19,19 +22,58 @@
             <input class="searcher-input " type="search" placeholder="Search">
         </form>
     </div>
+    <div class="current-user">
+    {% if current_user.is_authenticated %}
+        <span>Welcome, {{ current_user.nickName }}</span>
+    {% endif %}
+</div>
     <div class="account">
         <img src="../static/img/user.png" alt="user" class="account-icon">
     </div>
+     <div id="account-dropdown" class="account-dropdown">
+        <div class="dropdown-content">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
+                <a href="#" class="account-button">Konto</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
+                <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+            {% endif %}
+        </div>
+    </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('.account').click(function () {
+            $('#account-dropdown').toggle();
+        });
+    });
+</script>
+{% endblock %}
 {% block content %}
 <div class="content">
     <p class="popular"> Najpopularniejsze </p>
     <div class="company-container">
-     {%  for company in companies %}
-        <div class="company-field">
-        <p class="company-content"> <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo"> &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20;  {{ company.opinions }}  &#20;  </p>
-        </div>
+     {% for company in companies %}
+  <div class="company-field">
+    <p class="company-content">
+      <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo">
+      &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20; {{ company.opinions / company.number_of_opinions }}
+      {% set rating = company.opinions / company.number_of_opinions %}
+      {% set stars_count = rating|round|int %}
+      {% if rating >= 0 and rating <= 5 %}
+        {% for _ in range(stars_count) %}
+          <i class="fas fa-star"></i>
         {% endfor %}
+        {% for _ in range(5 - stars_count) %}
+          <i class="far fa-star"></i>
+        {% endfor %}
+      {% endif %}
+    </p>
+  </div>
+{% endfor %}
+
     </div>
 </div>
 {% endblock %}

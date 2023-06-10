@@ -64,12 +64,58 @@
 }
 .account-icon:hover{
     transform: scale(1.10);
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
+}
+#account-dropdown {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 180px;
+    left: 1680px;
+    background-color: #f1f1f1;
+    padding: 10px;
+}
+
+.dropdown-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.login,
+.register, .account-button, .logout {
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    color: #2BB1E2;
+    text-decoration: none;
+}
+
+.login:hover {
+    background-color: #e7e7e7;
+}
+
+.register:hover {
+    background-color: #e7e7e7;
+}
+.account-button:hover {
+    background-color: #e7e7e7;
+}
+
+.logout:hover {
+    background-color: #e7e7e7;
 }
 .content{
     position: absolute;
     width: 100%;
-    height: 680px;
+    height: 720px;
     left: 0px;
     top: 250px;
     border-bottom: lightgrey 1px solid
@@ -95,7 +141,7 @@
     width: 850px;
     height: auto;
     left: 540px;
-    top: 200px;
+    top: 180px;
 }
 
 .firm-logo{
@@ -111,19 +157,30 @@
     font-size: 40px;
 
     color: #2BB1E2;
+    text-align: center;
+    max-height: 300px;
 }
 .company-content {
-    margin: 5px 0 0 0 ;
+    margin: 25px 0 0 0;
 }
 .footer{
     position: fixed;
     top: 930px;
     width: 100%;
     height: 350px;
-    /*margin-top: 70px;*/
     text-align: center;
     margin: 70px 0 0 0;
 }
 .footer-content{
 
+}
+.current-user{
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 76px;
+    text-align: center;
+    color: black;
+    height: 100px;
 }

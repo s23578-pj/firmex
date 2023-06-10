@@ -1,0 +1,130 @@
+.login-content{
+     position: absolute;
+    width: 100%;
+    height: 720px;
+    left: 0;
+    top: 250px;
+    border-bottom: lightgrey 1px solid;
+    background-color: #2BB1E2;
+}
+.title-register{
+    position: absolute;
+    left: 50%;
+    top: 5px;
+
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 76px;
+    text-align: center;
+    color: black;
+    margin-bottom: 0;
+}
+form {
+  width: 400px;
+  margin: 0 auto;
+    left: 50%;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+    border-radius: 30px;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 76px;
+    text-align: center;
+    color: black;
+}
+
+.form-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    top: 10px;
+}
+.error-message{
+    color: red;
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+#toast {
+  position: absolute;
+  top: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4CAF50; /* Kolor tła komunikatu sukcesu */
+  color: #ffffff; /* Kolor tekstu komunikatu sukcesu */
+  padding: 10px;
+  border-radius: 4px;
+  opacity: 1;
+  transition: opacity 0.5s;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 76px;
+    text-align: center;
+}
+.register_button{
+    border-radius: 30px;
+    background-color: #2BB1E2;
+    border: black 2px solid;
+    color: white;
+    width: 430px;
+    height: 100px;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 76px;
+    text-align: center;
+}
+.forget-password{
+    position: absolute;
+    left: 600px;
+    top: 500px;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 76px;
+    text-align: center;
+    color: black;
+    text-decoration: none;
+}
+.go-login{
+    position: absolute;
+    left: 750px;
+    top: 900px;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 76px;
+    text-align: center;
+    color: black;
+    text-decoration: none;
+}
+.go-register{
+    position: absolute;
+    left: 1050px;
+    top: 500px;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 76px;
+    text-align: center;
+    color: black;
+    text-decoration: none;
+}
