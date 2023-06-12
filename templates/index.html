@@ -18,10 +18,12 @@
         <button class="category">Kategorie</button>
     </div>
     <div class="searcher-container">
-        <form>
-            <input class="searcher-input " type="search" placeholder="Search">
-        </form>
-    </div>
+    <form action="{{ url_for('search_companies') }}" method="GET">
+        <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
+        <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
+    </form>
+</div>
+
     <div class="current-user">
     {% if current_user.is_authenticated %}
         <span>Welcome, {{ current_user.nickName }}</span>
@@ -34,7 +36,7 @@
         <div class="dropdown-content">
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
-                <a href="#" class="account-button">Konto</a>
+                <a href="{{ url_for('account') }}" class="account-button">Konto</a>
             {% else %}
                 <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
                 <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>

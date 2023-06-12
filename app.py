@@ -1,12 +1,18 @@
+import random
+import string
+import os
+import mail as mail
+
 from flask import Flask, render_template, redirect, url_for, flash, Markup, session, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from sqlalchemy import desc
-from wtforms import StringField, PasswordField, BooleanField, validators
+from wtforms import StringField, PasswordField, BooleanField, validators, SubmitField
 from wtforms.validators import Email, InputRequired, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, current_user, LoginManager, logout_user
-import time
+from flask_login import login_user, current_user, LoginManager, logout_user, login_required
+from flask_mail import Message, Mail
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "firmex"
@@ -17,6 +23,15 @@ db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587  # or the appropriate port number
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'polskiorzel19@gmail.com'
+app.config['MAIL_PASSWORD'] = 'qagcltdvijdehxso'
+app.config['SECRET_KEY'] = os.urandom(24)
+
+mail = Mail(app)
 
 
 class Company(db.Model):
@@ -38,6 +53,13 @@ class Opinion(db.Model):
     date = db.Column(db.String, nullable=False)
 
 
+class Searches(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.String, nullable=False)
+    companyName = db.Column(db.String, nullable=False)
+    date = db.Column(db.String, nullable=False)
+
+
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -45,6 +67,7 @@ class Users(db.Model):
     email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     nickName = db.Column(db.String, nullable=False)
+    resetCode = db.Column(db.String, nullable=False)
 
     is_active = True
 
@@ -124,7 +147,6 @@ def load_user(user_id):
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(), Email()])
     password = PasswordField('Password', validators=[InputRequired()])
-    remember = BooleanField('Remember Me')
 
     def validate_login(self):
         email = self.email.data
@@ -136,6 +158,65 @@ class LoginForm(FlaskForm):
 
         # Ustawienie aktualnie zalogowanego użytkownika
         login_user(user)
+
+
+class ForgetPasswordForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(), Email()])
+    submit = SubmitField('Submit')
+
+    def validate_email(self, field):
+        email = field.data
+
+        user = Users.query.filter_by(email=email).first()
+        if not user:
+            raise ValidationError('Email address not found.')
+
+
+class ResetPasswordForm(FlaskForm):
+    code = StringField('Kod resetujący hasło', validators=[InputRequired()])
+    submit = SubmitField('Zresetuj hasło')
+
+    def validate_code(self, field):
+        code = field.data
+
+        user = Users.query.filter_by(resetCode=code).first()
+        if not user:
+            raise ValidationError('Nieprawidłowy kod resetujący hasło.')
+
+
+class NewPasswordForm(FlaskForm):
+    new_password = PasswordField('Nowe hasło', validators=[InputRequired()])
+    confirmNewPassword = PasswordField('Confirm Password', validators=[InputRequired()])
+    submit = SubmitField('Zapisz')
+
+    def validate_new_password(self, field):
+        new_password = field.data
+
+        if len(new_password) < 8:
+            raise ValidationError('Password must be at least 8 characters long.')
+
+        if not any(char.isdigit() for char in new_password):
+            raise ValidationError('Password must contain at least one digit.')
+
+        if not any(char.islower() for char in new_password):
+            raise ValidationError('Password must contain at least one lowercase letter.')
+
+        if not any(char.isupper() for char in new_password):
+            raise ValidationError('Password must contain at least one uppercase letter.')
+
+        special_characters = "!@#$%^&*()-_=+[]{};:'\"|\\<>,./?`~"
+        if not any(char in special_characters for char in new_password):
+            raise ValidationError('Password must contain at least one special character.')
+
+        if len(new_password) > 50:
+            raise ValidationError('Password must not exceed 50 characters.')
+
+        if len(new_password) < 8:
+            raise ValidationError('Password must be at least 8 characters long.')
+
+    def validate_confirmNewPassword(self, field):
+        if field.data != self.new_password.data:
+            raise ValidationError('Passwords must match.')
 
 
 @app.route('/')
@@ -198,6 +279,123 @@ def register():
         return redirect(request.referrer or url_for('login'))
 
     return render_template('register.html', form=form, current_user=current_user)
+
+
+@app.route('/forget_password', methods=['GET', 'POST'])
+def forget_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('main_page'))
+    form = ForgetPasswordForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        user = Users.query.filter_by(email=email).first()
+        if user:
+            # Generate a random password reset code
+            code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+
+            # Update the password reset code in the database
+            user.resetCode = code
+            db.session.commit()  # Save the changes to the database
+
+            # Send the password reset code via email
+            msg = Message('Reset Password', sender='your_email@example.com', recipients=[email])
+            msg.body = f'Your password reset code is: {code}'
+            mail.send(msg)
+
+            flash('Reset password code has been sent to your email.', 'success')
+            return redirect(url_for('reset_password', email=email))
+        else:
+            flash('Email address not found.', 'error')
+
+    return render_template('forget_password.html', form=form)
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('main_page'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        code = form.code.data
+        user = Users.query.filter_by(resetCode=code).first()
+        if user:
+            return redirect(url_for('new_password', code=code))
+        else:
+            flash('Nieprawidłowy kod resetujący hasło.', 'error')
+
+    return render_template('reset_password.html', form=form)
+
+
+@app.route('/new_password/<code>', methods=['GET', 'POST'])
+def new_password(code):
+    if current_user.is_authenticated:
+        return redirect(url_for('main_page'))
+    form = NewPasswordForm()
+    user = Users.query.filter_by(resetCode=code).first()
+
+    if not user:
+        flash('Nieprawidłowy kod resetujący hasło.', 'error')
+        return redirect(url_for('reset_password'))
+
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.new_password.data)
+        new_password = hashed_password
+        # Zaktualizuj hasło użytkownika w bazie danych
+        user.password = new_password
+        db.session.commit()
+
+        # Usuń kod resetujący hasło
+        user.resetCode = None
+        db.session.commit()
+
+        flash('Hasło zostało zresetowane.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('new_password.html', form=form)
+
+
+@app.route('/search_companies', methods=['GET', 'POST'])
+def search_companies():
+    query = request.args.get('query', '').lower()
+
+    # Zapisz wyszukiwanie użytkownika do tabeli Searches
+    if current_user.is_authenticated and query.strip() != '':
+        companies = Company.query.filter(Company.name.ilike(f'{query}%')).all()
+        search = Searches(
+            userId=current_user.id,
+            companyName=query,
+            date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+        db.session.add(search)
+        db.session.commit()
+        return render_template('search_results.html', companies=companies, query=query)
+
+    return redirect(url_for('main_page'))
+
+
+@app.route('/account')
+def account():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    return render_template('account.html', current_user=current_user)
+
+
+@app.route('/last_searches')
+def last_searches():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+
+    userId = request.args.get('userId')
+    # Pobierz ostatnie wyszukiwania dla danego user_id
+    searches = Searches.query.filter_by(userId=userId).order_by(Searches.date.desc()).limit(10).all()
+
+    # Pobierz nazwy wszystkich firm
+    company_names = [search.companyName.lower() for search in searches]
+
+    # Pobierz obiekty company na podstawie companyName
+    companies = Company.query.all()
+
+    return render_template('last_searches.html', searches=searches, companies=companies, company_names=company_names)
 
 
 if __name__ == '__main__':

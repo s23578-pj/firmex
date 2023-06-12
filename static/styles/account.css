@@ -1,0 +1,23 @@
+.account-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+data-container {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+.last-searched-container{
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+
+    color: white;
+    text-align: center;
+    max-height: 300px;
+}

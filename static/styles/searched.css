@@ -1,0 +1,14 @@
+.company-searched-field{
+    border: lightgrey 1px solid;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+
+    color: white;
+    text-align: center;
+    max-height: 300px;
+}
+.company-searched-field:hover{
+    box-shadow: 5px 5px 25px black;
+}
