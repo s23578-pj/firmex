@@ -51,6 +51,9 @@ class Opinion(db.Model):
     userId = db.Column(db.Integer, nullable=False)
     content = db.Column(db.String, nullable=False)
     date = db.Column(db.String, nullable=False)
+    value = db.Column(db.Float, nullable=False)
+    category = db.Column(db.String, nullable=False)
+    companyId = db.Column(db.Integer, nullable=False)
 
 
 class Searches(db.Model):
@@ -369,6 +372,9 @@ def search_companies():
         db.session.add(search)
         db.session.commit()
         return render_template('search_results.html', companies=companies, query=query)
+    if not current_user.is_authenticated and query.strip() != '':
+        companies = Company.query.filter(Company.name.ilike(f'{query}%')).all()
+        return render_template('search_results.html', companies=companies, query=query)
 
     return redirect(url_for('main_page'))
 
@@ -396,6 +402,17 @@ def last_searches():
     companies = Company.query.all()
 
     return render_template('last_searches.html', searches=searches, companies=companies, company_names=company_names)
+
+
+@app.route('/company/<company_id>')
+def company(company_id):
+    company = Company.query.get(company_id)
+    if not company:
+        return "Company not found"
+
+    opinions = Opinion.query.filter_by(companyId=company_id).all()
+
+    return render_template('company.html', company=company, opinions=opinions)
 
 
 if __name__ == '__main__':

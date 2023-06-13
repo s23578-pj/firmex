@@ -60,7 +60,7 @@
     <h2>Search Results for "{{ query }}"</h2>
      {% for company in companies %}
     <div class="company-searched-field">
-                <p class="company-content">
+              <a href="{{ url_for('company', company_id=company.id) }}">  <p class="company-content">
 <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo">
                     &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20; {{ company.opinions / company.number_of_opinions }}
                     {% set rating = company.opinions / company.number_of_opinions %}
@@ -73,12 +73,13 @@
                             <i class="far fa-star"></i>
                         {% endfor %}
                     {% endif %}
-                </p>
-            </div>
+                </p></a>
+
         {% endfor %}
 {% else %}
     <p>No results found.</p>
 {% endif %}
+     </div>
  </div>
 {% endblock %}
 <div class="footer">

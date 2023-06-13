@@ -21,3 +21,6 @@ data-container {
     text-align: center;
     max-height: 300px;
 }
+a{
+    text-decoration: none;
+}

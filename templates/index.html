@@ -58,7 +58,7 @@
     <p class="popular"> Najpopularniejsze </p>
     <div class="company-container">
      {% for company in companies %}
-  <div class="company-field">
+ <a href="{{ url_for('company', company_id=company.id) }}"> <div class="company-field">
     <p class="company-content">
       <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo">
       &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20; {{ company.opinions / company.number_of_opinions }}
@@ -73,7 +73,7 @@
         {% endfor %}
       {% endif %}
     </p>
-  </div>
+ </div></a>
 {% endfor %}
 
     </div>

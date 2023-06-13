@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="../static/styles/login.css">
+    <link rel="stylesheet" href="../static/styles/company.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Firmex</title>
+
+</head>
+<body>
+{% block nav %}
+<div class="nav">
+    <div class="logo">
+        <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
+    </div>
+    <div>
+        <button class="category">Kategorie</button>
+    </div>
+    <div class="searcher-container">
+    <form action="{{ url_for('search_companies') }}" method="GET">
+        <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
+        <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
+    </form>
+</div>
+
+    <div class="current-user">
+    {% if current_user.is_authenticated %}
+        <span>Welcome, {{ current_user.nickName }}</span>
+    {% endif %}
+</div>
+    <div class="account">
+        <img src="../static/img/user.png" alt="user" class="account-icon">
+    </div>
+     <div id="account-dropdown" class="account-dropdown">
+        <div class="dropdown-content">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
+                <a href="{{ url_for('account') }}" class="account-button">Konto</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
+                <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.account').click(function () {
+            $('#account-dropdown').toggle();
+        });
+    });
+</script>
+{% endblock %}
+{% block company_content %}
+    <div class="login-content">
+        <div class="company-information-container">
+            <div class="company-little-square">
+                <p class="copany-information-content"><img src="{{ company.image_path }}" alt="Company Logo"
+                                                           class="firm-logo"> <br/>
+                    {{ company.opinions / company.number_of_opinions }}
+                    {% set rating = company.opinions / company.number_of_opinions %}
+                    {% set stars_count = rating|round|int %}
+                    {% if rating >= 0 and rating <= 5 %}
+                        {% for _ in range(stars_count) %}
+                            <i class="fas fa-star"></i>
+                        {% endfor %}
+                        {% for _ in range(5 - stars_count) %}
+                            <i class="far fa-star"></i>
+                        {% endfor %}
+                    {% endif %}
+                    </br>
+                    {{ company.number_of_opinions }} opinii</p>
+            </div>
+            <div class="title-and-description">
+                <p class="description-content">
+                    {{ company.name }} - opinie
+                    </br>
+                    {{ company.description }}
+                </p>
+
+            </div>
+            <div class="add-opinion">
+                <button class="add-button-opinions"> Opinie</button>
+                <button class="add-button"> Dodaj opinie</button>
+            </div>
+            <div class="opinions-category">
+                <button id="all-button" class="category-button">Wszystkie</button>
+                <button id="positive-button" class="category-button">Pozytywne</button>
+                <button id="negative-button" class="category-button">Negatywne</button>
+                <button id="neutral-button" class="category-button">Neutralne</button>
+
+                 <select id="sort-select" class="sort">
+        <option value="">Sortuj według</option>
+        <option value="date_asc">Data dodania (rosnąco)</option>
+        <option value="date_desc">Data dodania (malejąco)</option>
+        <option value="rating_asc">Ocena użytkowników (rosnąco)</option>
+        <option value="rating_desc">Ocena użytkowników (malejąco)</option>
+    </select>
+            </div>
+
+            <div class="opinions-container">
+    <div class="opinion-field">
+        {% for opinion in opinions %}
+        <p class="opinion-content" data-category="{{ opinion.category }}" data-date="{{ opinion.date }}" data-value="{{ opinion.value }}">
+            <img src="../static/img/account_profile.png">
+            &#20; {{ opinion.userName }} &#20; {{ opinion.value }} &#20; &#20; &#20; {{ opinion.date }}
+            <br>
+            {{ opinion.content }}
+        </p>
+        {% endfor %}
+    </div>
+</div>
+        </div>
+    </div>
+{% endblock %}
+<div class="footer">
+    <p class="footer-content">Footer</p>
+</div>
+<script>
+ // Funkcja obsługująca kliknięcie przycisku "Wszystkie"
+    document.getElementById("all-button").addEventListener("click", function() {
+        // Resetowanie kolorów wszystkich przycisków
+        document.querySelectorAll(".category-button").forEach(function(button) {
+            button.style.backgroundColor = "transparent";
+        });
+        // Ustawienie koloru aktywnego dla klikniętego przycisku
+        document.getElementById("all-button").style.backgroundColor = "blue";
+
+        // Wyświetlanie wszystkich opinii
+        document.querySelectorAll(".opinion-content").forEach(function(opinion) {
+            opinion.style.display = "block";
+        });
+    });
+
+    // Funkcja obsługująca kliknięcie przycisku "Pozytywne"
+    document.getElementById("positive-button").addEventListener("click", function() {
+        // Resetowanie kolorów wszystkich przycisków
+        document.querySelectorAll(".category-button").forEach(function(button) {
+            button.style.backgroundColor = "transparent";
+        });
+        // Ustawienie koloru aktywnego dla klikniętego przycisku
+        document.getElementById("positive-button").style.backgroundColor = "blue";
+
+        // Wyświetlanie tylko opinii pozytywnych
+        document.querySelectorAll(".opinion-content").forEach(function(opinion) {
+            // Sprawdzenie, czy opinia ma kategorię "pozytywne"
+            if (opinion.dataset.category === "pozytywna") {
+                opinion.style.display = "block";
+            } else {
+                opinion.style.display = "none";
+            }
+        });
+    });
+
+    // Funkcja obsługująca kliknięcie przycisku "Negatywne"
+    document.getElementById("negative-button").addEventListener("click", function() {
+        // Resetowanie kolorów wszystkich przycisków
+        document.querySelectorAll(".category-button").forEach(function(button) {
+            button.style.backgroundColor = "transparent";
+        });
+        // Ustawienie koloru aktywnego dla klikniętego przycisku
+        document.getElementById("negative-button").style.backgroundColor = "blue";
+
+        // Wyświetlanie tylko opinii negatywnych
+        document.querySelectorAll(".opinion-content").forEach(function(opinion) {
+            // Sprawdzenie, czy opinia ma kategorię "negatywne"
+            if (opinion.dataset.category === "negatywna") {
+                opinion.style.display = "block";
+            } else {
+                opinion.style.display = "none";
+            }
+        });
+    });
+
+    // Funkcja obsługująca kliknięcie przycisku "Neutralne"
+    document.getElementById("neutral-button").addEventListener("click", function() {
+        // Resetowanie kolorów wszystkich przycisków
+        document.querySelectorAll(".category-button").forEach(function(button) {
+            button.style.backgroundColor = "transparent";
+        });
+        // Ustawienie koloru aktywnego dla klikniętego przycisku
+        document.getElementById("neutral-button").style.backgroundColor = "blue";
+
+        // Wyświetlanie tylko opinii neutralnych
+        document.querySelectorAll(".opinion-content").forEach(function(opinion) {
+            // Sprawdzenie, czy opinia ma kategorię "neutralne"
+            if (opinion.dataset.category === "neutralna") {
+                opinion.style.display = "block";
+            } else {
+                opinion.style.display = "none";
+            }
+        });
+    });
+</script>
+
+<script>
+    // Funkcja obsługująca sortowanie opinii
+function sortOpinions(sortBy) {
+  const opinionsContainer = document.querySelector(".opinions-container");
+  const opinions = Array.from(document.querySelectorAll(".opinion-content"));
+
+  opinions.sort(function(a, b) {
+    const opinionA = a.dataset;
+    const opinionB = b.dataset;
+
+    if (sortBy === "date_asc") {
+      return new Date(opinionA.date) - new Date(opinionB.date);
+    } else if (sortBy === "date_desc") {
+      return new Date(opinionB.date) - new Date(opinionA.date);
+    } else if (sortBy === "rating_asc") {
+      return opinionA.value - opinionB.value;
+    } else if (sortBy === "rating_desc") {
+      return opinionB.value - opinionA.value;
+    }
+
+    return 0;
+  });
+
+  opinionsContainer.innerHTML = "";
+  opinions.forEach(function(opinion) {
+    opinionsContainer.appendChild(opinion);
+  });
+}
+
+// Funkcja obsługująca zmianę wybranej opcji sortowania
+document.getElementById("sort-select").addEventListener("change", function() {
+  const selectedOption = this.value;
+  sortOpinions(selectedOption);
+});
+
+// Funkcja inicjalizująca sortowanie przy załadowaniu strony
+window.addEventListener("DOMContentLoaded", function() {
+  const selectedOption = document.getElementById("sort-select").value;
+  sortOpinions(selectedOption);
+});
+</script>
+</body>
+</html>

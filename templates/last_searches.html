@@ -62,7 +62,7 @@
             {% for company in companies %}
 <div class="last-searched-container">
         {% if search.companyName.lower() == company.name.lower() %}
-            <p class="company-content">{{ search.companyName }} - {{ search.date }}</p>
+            <a href="{{ url_for('company', company_id=company.id) }}"><p class="company-content"><img src="{{ company.image_path }}" alt="company-logo" class="firm-logo"> &#20; {{ search.companyName }} &#20; {{ search.date }} </p></a>
                 {% endif %}
             {% endfor %}
         {% endfor %}

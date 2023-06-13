@@ -1,0 +1,50 @@
+.add-button-opinions{
+    background-color: blue;
+    border: lightgrey 2px solid;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 76px;
+    text-align: center;
+    color: white;
+    margin: 10px;
+}
+.add-button{
+    background-color: #2BB1E2;
+    border: lightgrey 2px solid;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 76px;
+    text-align: center;
+    color: white;
+    margin: 10px;
+}
+#all{
+    background-color: blue;
+}
+
+.category-button{
+    background-color: #2BB1E2;
+    border: lightgrey 2px solid;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 76px;
+    text-align: center;
+    color: white;
+    margin: 10px;
+}
+
+.opinion-content{
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 76px;
+    color: white;
+    margin: 0;
+}
