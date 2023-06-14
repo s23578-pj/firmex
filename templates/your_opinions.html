@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="../static/styles/login.css">
+    <link rel="stylesheet" href="../static/styles/account.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Firmex</title>
@@ -23,7 +25,6 @@
         <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
     </form>
 </div>
-
     <div class="current-user">
     {% if current_user.is_authenticated %}
         <span>Welcome, {{ current_user.nickName }}</span>
@@ -54,33 +55,32 @@
 </script>
 {% endblock %}
 {% block content %}
-<div class="content">
-    <p class="popular"> Najpopularniejsze </p>
-    <div class="company-container">
-     {% for company in companies %}
- <a href="{{ url_for('company', company_id=company.id) }}"> <div class="company-field">
-    <p class="company-content">
-      <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo">
-      &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20; {{ '%.1f' % (company.opinions / company.number_of_opinions) }}
-      {% set rating = company.opinions / company.number_of_opinions %}
-      {% set stars_count = rating|round|int %}
-      {% if rating >= 0 and rating <= 5 %}
-        {% for _ in range(stars_count) %}
-          <i class="fas fa-star"></i>
-        {% endfor %}
-        {% for _ in range(5 - stars_count) %}
-          <i class="far fa-star"></i>
-        {% endfor %}
-      {% endif %}
-    </p>
- </div></a>
-{% endfor %}
+<div class="login-content">
 
-    </div>
+    {% if opinions %}
+        <h1>Your Opinions</h1>
+        <ul class="opinions-list">
+            {% for opinion in opinions %}
+                <li>
+                    <a href="{{ url_for('company', company_id=opinion.companyId) }}">  <p> Firma: {{ opinion.companyName }}</p></a>
+                    <p>Treść: {{ opinion.content }}</p>
+                    <p>Data: {{ opinion.date }}</p>
+                    <p>Wartość: {{ opinion.value }}</p>
+                    <p>Kategoria: {{ opinion.category }}</p>
+                </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak opinii do wyświetlenia.</p>
+    {% endif %}
+<div><a href="{{ url_for('account') }}" class="account-button">Dane użytkownika</a></div><br>
+<div><a href="{{ url_for('last_searches') }}?userId={{ current_user.id }}" class="account-button">Twoje wyszukiwania</a></div>
 </div>
 {% endblock %}
 <div class="footer">
-        <p class="footer-content">Footer</p>
+    <p class="footer-content">Footer</p>
+
 </div>
+
 </body>
 </html>

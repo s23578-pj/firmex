@@ -24,3 +24,11 @@ data-container {
 a{
     text-decoration: none;
 }
+.opinions-list{
+     font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+
+    color: black;
+}

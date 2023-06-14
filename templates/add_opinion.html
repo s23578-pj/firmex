@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../static/styles/style.css">
+    <link rel="stylesheet" href="../../static/styles/login.css">
+    <link rel="stylesheet" href="../../static/styles/company.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
+    <title>Firmex</title>
+
+</head>
+<body>
+{% block nav %}
+    <div class="nav">
+        <div class="logo">
+            <a href="/"><img src="../../static/img/logo.png" alt="logo" class="company-logo"></a>
+        </div>
+        <div>
+            <button class="category">Kategorie</button>
+        </div>
+        <div class="searcher-container">
+            <form action="{{ url_for('search_companies') }}" method="GET">
+                <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
+                <button type="submit" class="search_button"><img src="../../static/img/search.png" alt="przycisk">
+                </button>
+            </form>
+        </div>
+
+        <div class="current-user">
+            {% if current_user.is_authenticated %}
+                <span>Welcome, {{ current_user.nickName }}</span>
+            {% endif %}
+        </div>
+        <div class="account">
+            <img src="../../static/img/user.png" alt="user" class="account-icon">
+        </div>
+        <div id="account-dropdown" class="account-dropdown">
+            <div class="dropdown-content">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
+                    <a href="{{ url_for('account') }}" class="account-button">Konto</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
+                    <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.account').click(function () {
+                $('#account-dropdown').toggle();
+            });
+        });
+    </script>
+{% endblock %}
+<div class="login-content">
+    <h1>Dodaj opinię o firmie</h1>
+    <div>
+        <form id="opinion-form" action="/company/add_opinion/{{ company_id }}" method="POST"
+              enctype="multipart/form-data">
+            <span class=point-title>&bigstar; Ocena punktowa</span><br>
+
+            <label class="category-title">Poziom obsługi klienta:</label>
+            <input type="hidden" name="category1" id="category1">
+            <div id="category1-stars" class="rateyo-container"></div>
+            <br>
+
+            <label class="category-title">Szybkość realizacji zamówienia:</label>
+            <input type="hidden" name="category2" id="category2">
+            <div id="category2-stars" class="rateyo-container"></div>
+            <br>
+
+            <label class="category-title">Jakość zapakowania przesyłki:</label>
+            <input type="hidden" name="category3" id="category3">
+            <div id="category3-stars" class="rateyo-container"></div>
+            <br>
+
+            <label class="category-title">Poleciłbym tą firmę znajomym:</label>
+            <input type="hidden" name="category4" id="category4">
+            <div id="category4-stars" class="rateyo-container"></div>
+            <br>
+
+            <label class="point-title"><img src="../../static/img/comment.png"> &#20; Opinia tekstowa</label>
+            <input type="text" id="content" name="content" required><br><br>
+
+            <button type="submit" id="add-opinion-button" class="add-button">Dodaj opinię</button>
+        </form>
+    </div>
+</div>
+<div class="footer">
+    <p class="footer-content">Footer</p>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#category1-stars").rateYo({
+            rating: 0,
+            numStars: 5,
+            precision: 0, // Ustawienie precyzji na 0
+            minValue: 1,
+            maxValue: 5,
+            starWidth: "25px",
+            normalFill: "light-grey",
+            ratedFill: "white",
+            readOnly: false,
+            onChange: function (rating, rateYoInstance) {
+                $("#category1").val(rating); // Aktualizacja wartości w ukrytym input-ie
+            }
+        });
+
+        $("#category2-stars").rateYo({
+            rating: 0,
+            numStars: 5,
+            precision: 0, // Ustawienie precyzji na 0
+            minValue: 1,
+            maxValue: 5,
+            starWidth: "25px",
+            normalFill: "light-grey",
+            ratedFill: "white",
+            readOnly: false,
+            onChange: function (rating, rateYoInstance) {
+                $("#category2").val(rating); // Aktualizacja wartości w ukrytym input-ie
+            }
+        });
+
+        $("#category3-stars").rateYo({
+            rating: 0,
+            numStars: 5,
+            precision: 0, // Ustawienie precyzji na 0
+            minValue: 1,
+            maxValue: 5,
+            starWidth: "25px",
+            normalFill: "light-grey",
+            ratedFill: "white",
+            readOnly: false,
+            onChange: function (rating, rateYoInstance) {
+                $("#category3").val(rating); // Aktualizacja wartości w ukrytym input-ie
+            }
+        });
+
+        $("#category4-stars").rateYo({
+            rating: 0,
+            numStars: 5,
+            precision: 0, // Ustawienie precyzji na 0
+            minValue: 1,
+            maxValue: 5,
+            starWidth: "25px",
+            normalFill: "light-grey",
+            ratedFill: "white",
+            readOnly: false,
+            onChange: function (rating, rateYoInstance) {
+                $("#category4").val(rating); // Aktualizacja wartości w ukrytym input-ie
+            }
+        });
+    });
+</script>
+
+<script>
+    function addOpinion() {
+        let category1 = $("#category1-stars").rateYo('rating') || 0.0;
+        let category2 = $("#category2-stars").rateYo('rating') || 0.0;
+        let category3 = $("#category3-stars").rateYo('rating') || 0.0;
+        let category4 = $("#category4-stars").rateYo('rating') || 0.0;
+
+
+        let averageRating = (category1 + category2 + category3 + category4) / 4;
+
+        let opinion = {
+            userName: "{{ current_user.nickName }}",
+            userId: "{{ current_user.id }}",
+            content: document.getElementById("content").value,
+            date: document.getElementById("date").value,
+            category1: parseFloat(category1),
+            category2: parseFloat(category2),
+            category3: parseFloat(category3),
+            category4: parseFloat(category4),
+            value: parseFloat(averageRating)
+        };
+
+        $.ajax({
+            url: "/company/{{ company_id }}/add_opinion",
+            type: "POST",
+            data: JSON.stringify(opinion), // dodano JSON.stringify()
+            contentType: "application/json",
+            success: function (response) {
+                // Obsługa sukcesu (opcjonalnie)
+                console.log("Opinia dodana: ", response);
+            },
+            error: function (error) {
+                // Obsługa błędu (opcjonalnie)
+                console.error("Wystąpił błąd: ", error);
+            }
+        });
+
+    }
+</script>
+</body>
+</html>

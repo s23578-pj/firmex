@@ -61,7 +61,7 @@
             <div class="company-little-square">
                 <p class="copany-information-content"><img src="{{ company.image_path }}" alt="Company Logo"
                                                            class="firm-logo"> <br/>
-                    {{ company.opinions / company.number_of_opinions }}
+                    {{ '%.1f' % (company.opinions / company.number_of_opinions) }}
                     {% set rating = company.opinions / company.number_of_opinions %}
                     {% set stars_count = rating|round|int %}
                     {% if rating >= 0 and rating <= 5 %}
@@ -85,16 +85,16 @@
             </div>
             <div class="add-opinion">
                 <button class="add-button-opinions"> Opinie</button>
-                <button class="add-button"> Dodaj opinie</button>
+                <a href="{{ url_for('add_opinion', company_id=company.id) }}"><button class="add-button">Dodaj opinię</button></a>
+
             </div>
             <div class="opinions-category">
                 <button id="all-button" class="category-button">Wszystkie</button>
                 <button id="positive-button" class="category-button">Pozytywne</button>
                 <button id="negative-button" class="category-button">Negatywne</button>
                 <button id="neutral-button" class="category-button">Neutralne</button>
-
+                        <span class="sort-title">Sortuj według</span>
                  <select id="sort-select" class="sort">
-        <option value="">Sortuj według</option>
         <option value="date_asc">Data dodania (rosnąco)</option>
         <option value="date_desc">Data dodania (malejąco)</option>
         <option value="rating_asc">Ocena użytkowników (rosnąco)</option>
@@ -238,5 +238,8 @@ window.addEventListener("DOMContentLoaded", function() {
   sortOpinions(selectedOption);
 });
 </script>
+<div class="footer">
+        <p class="footer-content">Footer</p>
+</div>
 </body>
 </html>

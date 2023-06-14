@@ -66,9 +66,9 @@
   <p>Nick: {{ current_user.nickName }}</p>
 
         </div>
-<div><a href="{{ url_for('last_searches') }}?userId={{ current_user.id }}">Twoje wyszukiwania</a></div>
+<div><a href="{{ url_for('last_searches') }}?userId={{ current_user.id }}" class="account-button">Twoje wyszukiwania</a></div>
 </br>
-<div><a href="#">Twoje opinie</a></div>
+<div><a href="{{ url_for('your_opinions') }}?userId={{ current_user.id }}" class="account-button">Twoje opinie</a></div>
 </div>
 {% endblock %}
 </div>

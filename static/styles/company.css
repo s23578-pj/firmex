@@ -48,3 +48,57 @@
     color: white;
     margin: 0;
 }
+.sort{
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 76px;
+    color: #2BB1E2;
+}
+.sort-title{
+    color:lightgrey;
+     font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 76px;
+    margin: 0;
+}
+.point-title{
+    color: white;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 76px;
+}
+.category-title{
+    color: white;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 76px;
+}
+.rateyo-container {
+  display: inline-block;
+}
+
+.rateyo-container .rateyo-empty {
+  color: transparent;
+    border: 1px solid white;
+}
+
+.rateyo-container .rateyo-selected {
+  color: white;
+}
+
+.rateyo-container .rateyo-hover {
+  color: white;
+}
+
+.rateyo-container .rateyo-rated {
+  color: white;
+}
+

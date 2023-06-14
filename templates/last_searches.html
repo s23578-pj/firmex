@@ -70,6 +70,8 @@
         <p>Brak ostatnich wyszukiwań</p>
     {% endif %}
     </div>
+<div><a href="{{ url_for('account') }}" class="account-button">Dane użytkownika</a></div><br>
+<div><a href="{{ url_for('your_opinions') }}?userId={{ current_user.id }}" class="account-button">Twoje opinie</a></div>
 </div>
 {% endblock %}
 <div class="footer">

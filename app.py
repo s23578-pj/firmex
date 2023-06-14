@@ -3,7 +3,7 @@ import string
 import os
 import mail as mail
 
-from flask import Flask, render_template, redirect, url_for, flash, Markup, session, request
+from flask import Flask, render_template, redirect, url_for, flash, Markup, session, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from sqlalchemy import desc
@@ -54,6 +54,7 @@ class Opinion(db.Model):
     value = db.Column(db.Float, nullable=False)
     category = db.Column(db.String, nullable=False)
     companyId = db.Column(db.Integer, nullable=False)
+    companyName=db.Column(db.String, nullable=False)
 
 
 class Searches(db.Model):
@@ -413,6 +414,72 @@ def company(company_id):
     opinions = Opinion.query.filter_by(companyId=company_id).all()
 
     return render_template('company.html', company=company, opinions=opinions)
+
+
+@app.route('/company/add_opinion/<company_id>', methods=['GET', 'POST'])
+def add_opinion(company_id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        # Pobierz dane z zapytania
+        userName = current_user.nickName
+        userId = current_user.id
+        content = request.form.get('content')
+        category1 = float(request.form.get('category1')) if request.form.get('category1') else 0.0
+        category2 = float(request.form.get('category2')) if request.form.get('category2') else 0.0
+        category3 = float(request.form.get('category3')) if request.form.get('category3') else 0.0
+        category4 = float(request.form.get('category4')) if request.form.get('category4') else 0.0
+
+        # Oblicz średnią ocenę
+        total_value = category1 + category2 + category3 + category4
+        value = total_value / 4
+
+        if value >= 4.0:
+            category = 'pozytywna'
+        elif value >= 3.0:
+            category = 'neutralna'
+        else:
+            category = 'negatywna'
+
+        company = Company.query.get(company_id)
+        # Utwórz nową opinię
+        new_opinion = Opinion(
+            userName=userName,
+            userId=userId,
+            content=content,
+            date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            value=value,
+            category=category,
+            companyId=company_id,
+            companyName=company.name
+        )
+
+
+        # Zwiększ liczbę opinii w firmie
+        company.number_of_opinions += 1
+
+        # Dodaj wartość opinii do opinions
+        company.opinions += value
+
+        # Zapisz zmiany w bazie danych
+        db.session.add(new_opinion)
+        db.session.commit()
+        db.session.commit()
+
+    return render_template('add_opinion.html', company_id=company_id, current_user=current_user)
+
+
+@app.route('/your_opinions')
+def your_opinions():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    # Pobierz 10 najnowszych opinii dla aktualnie zalogowanego użytkownika
+    opinions = Opinion.query.filter_by(userId=current_user.id).order_by(Opinion.date.desc()).limit(10).all()
+
+    companies = Company.query.all()
+
+    return render_template('your_opinions.html', opinions=opinions, companies=companies)
 
 
 if __name__ == '__main__':
