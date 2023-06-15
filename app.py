@@ -3,18 +3,22 @@ import string
 import os
 import mail as mail
 
-from flask import Flask, render_template, redirect, url_for, flash, Markup, session, request, jsonify
+from flask import Flask, render_template, redirect, url_for, flash, Markup, session, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, form
 from sqlalchemy import desc
 from wtforms import StringField, PasswordField, BooleanField, validators, SubmitField
-from wtforms.validators import Email, InputRequired, ValidationError
+from wtforms.validators import Email, InputRequired, ValidationError, DataRequired
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, current_user, LoginManager, logout_user, login_required
+from flask_login import login_user, current_user, LoginManager, logout_user
 from flask_mail import Message, Mail
 from datetime import datetime
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
+csrf = CSRFProtect(app)
+
+csrf.init_app(app)
 app.secret_key = "firmex"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///firmex.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -34,15 +38,24 @@ app.config['SECRET_KEY'] = os.urandom(24)
 mail = Mail(app)
 
 
+
+
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     number_of_opinions = db.Column(db.Integer, nullable=False)
     opinions = db.Column(db.Float, nullable=False)
     image_path = db.Column(db.String, nullable=False)
-    category = db.Column(db.String, nullable=False)
+    categoryId = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String, nullable=False)
     opinionId = db.Column(db.Integer, nullable=False)
+
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String, nullable=False)
+    companyId = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
+    companyName = db.Column(db.String, nullable=False)
 
 
 class Opinion(db.Model):
@@ -54,7 +67,7 @@ class Opinion(db.Model):
     value = db.Column(db.Float, nullable=False)
     category = db.Column(db.String, nullable=False)
     companyId = db.Column(db.Integer, nullable=False)
-    companyName=db.Column(db.String, nullable=False)
+    companyName = db.Column(db.String, nullable=False)
 
 
 class Searches(db.Model):
@@ -223,6 +236,15 @@ class NewPasswordForm(FlaskForm):
             raise ValidationError('Passwords must match.')
 
 
+class DeleteAccountForm(FlaskForm):
+    password = PasswordField('Hasło', validators=[DataRequired()])
+
+    def validate_password(self, field):
+        user = Users.query.get(current_user.id)
+        if not check_password_hash(user.password_hash, field.data):
+            raise ValidationError('Niepoprawne hasło.')
+
+
 @app.route('/')
 def main_page():
     companies = Company.query.order_by(desc(Company.opinions / Company.number_of_opinions)).limit(5).all()
@@ -380,11 +402,11 @@ def search_companies():
     return redirect(url_for('main_page'))
 
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 def account():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
-    return render_template('account.html', current_user=current_user)
+    return render_template('account.html', form=form, current_user=current_user)
 
 
 @app.route('/last_searches')
@@ -455,7 +477,6 @@ def add_opinion(company_id):
             companyName=company.name
         )
 
-
         # Zwiększ liczbę opinii w firmie
         company.number_of_opinions += 1
 
@@ -480,6 +501,47 @@ def your_opinions():
     companies = Company.query.all()
 
     return render_template('your_opinions.html', opinions=opinions, companies=companies)
+
+
+@app.route('/category')
+def category():
+    # Pobierz wszystkie unikalne kategorie
+    categories = Category.query.distinct(Category.category).all()
+
+    category_dict = {}  # Słownik przechowujący kategorie i przypisane do nich firmy
+
+    for category in categories:
+        # Pobierz firmy przypisane do danej kategorii
+        companies = Company.query.filter_by(categoryId=category.id).all()
+
+        if category.category not in category_dict:
+            category_dict[category.category] = []  # Utwórz pustą listę dla danej kategorii
+
+        # Dodaj firmy do listy przypisanej do danej kategorii w słowniku
+        category_dict[category.category].extend(companies)
+
+    return render_template('category.html', category_dict=category_dict)
+
+
+@app.route('/delete_account', methods=['POST'])
+@csrf.exempt  # Wyłącz ochronę CSRF dla tej trasy
+def delete_account():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        try:
+            user = current_user
+
+            db.session.delete(user)
+            db.session.commit()
+            logout_user()
+            flash('Twoje konto zostało usunięte.', 'success')
+            return redirect(url_for('main_page'))
+        except Exception as e:
+            flash(str(e), 'error')
+            return redirect(url_for('account'))
+
+    return render_template('account.html')
 
 
 if __name__ == '__main__':

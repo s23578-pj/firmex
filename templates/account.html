@@ -12,64 +12,72 @@
 </head>
 <body>
 {% block nav %}
-<div class="nav">
-    <div class="logo">
-        <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
-    </div>
-    <div>
-        <button class="category">Kategorie</button>
-    </div>
-    <div class="searcher-container">
-    <form action="{{ url_for('search_companies') }}" method="GET">
-        <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
-        <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
-    </form>
-</div>
-    <div class="current-user">
-    {% if current_user.is_authenticated %}
-        <span>Welcome, {{ current_user.nickName }}</span>
-    {% endif %}
-</div>
-    <div class="account">
-        <img src="../static/img/user.png" alt="user" class="account-icon">
-    </div>
-     <div id="account-dropdown" class="account-dropdown">
-        <div class="dropdown-content">
+    <div class="nav">
+        <div class="logo">
+            <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
+        </div>
+        <div>
+            <button class="category">Kategorie</button>
+        </div>
+        <div class="searcher-container">
+            <form action="{{ url_for('search_companies') }}" method="GET">
+                <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
+                <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
+            </form>
+        </div>
+        <div class="current-user">
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
-                <a href="{{ url_for('account') }}" class="account-button">Konto</a>
-            {% else %}
-                <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
-                <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+                <span>Welcome, {{ current_user.nickName }}</span>
             {% endif %}
         </div>
+        <div class="account">
+            <img src="../static/img/user.png" alt="user" class="account-icon">
+        </div>
+        <div id="account-dropdown" class="account-dropdown">
+            <div class="dropdown-content">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
+                    <a href="{{ url_for('account') }}" class="account-button">Konto</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
+                    <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    $(document).ready(function () {
-        $('.account').click(function () {
-            $('#account-dropdown').toggle();
+    <script>
+        $(document).ready(function () {
+            $('.account').click(function () {
+                $('#account-dropdown').toggle();
+            });
         });
-    });
-</script>
+    </script>
 {% endblock %}
 {% block content %}
-<div class="login-content">
-<div class="account-container">
+    <div class="login-content">
+    <div class="account-container">
         <div class="data-container">
-  <h1>Moje konto</h1>
-  <p>Witaj, {{ current_user.name }}!</p>
-  <p>Imię: {{ current_user.name }}</p>
-  <p>Nazwisko: {{ current_user.surname }}</p>
-  <p>Email: {{ current_user.email }}</p>
-  <p>Nick: {{ current_user.nickName }}</p>
+            <h1>Moje konto</h1>
+            <p>Witaj, {{ current_user.name }}!</p>
+            <p>Imię: {{ current_user.name }}</p>
+            <p>Nazwisko: {{ current_user.surname }}</p>
+            <p>Email: {{ current_user.email }}</p>
+            <p>Nick: {{ current_user.nickName }}</p>
 
         </div>
-<div><a href="{{ url_for('last_searches') }}?userId={{ current_user.id }}" class="account-button">Twoje wyszukiwania</a></div>
-</br>
-<div><a href="{{ url_for('your_opinions') }}?userId={{ current_user.id }}" class="account-button">Twoje opinie</a></div>
+        <div><a href="{{ url_for('last_searches') }}?userId={{ current_user.id }}" class="account-button">Twoje
+            wyszukiwania</a></div>
+        </br>
+        <div><a href="{{ url_for('your_opinions') }}?userId={{ current_user.id }}" class="account-button">Twoje
+            opinie</a></div>
+        <div >
+<form id="delete-account-form" action="{{ url_for('delete_account') }}" method="POST">
+    {{ form.csrf_token }}
+    <button id="delete-account-button" type="submit" class="account-button">Usuń konto</button>
+</form>
 </div>
+    </div>
 {% endblock %}
 </div>
 <div class="footer">

@@ -17,7 +17,7 @@
             <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
         </div>
         <div>
-            <button class="category">Kategorie</button>
+            <a href="{{ url_for('category') }}"><button class="category">Kategorie</button></a>
         </div>
         <div class="searcher-container">
             <form action="{{ url_for('search_companies') }}" method="GET">

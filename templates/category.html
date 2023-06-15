@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="../static/styles/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Firmex</title>
@@ -15,9 +16,7 @@
         <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
     </div>
     <div>
-        <div>
-    <a href="{{ url_for('category') }}"><button class="category">Kategorie</button></a>
-</div>
+        <a href="{{ url_for('category') }}"><button class="category">Kategorie</button></a>
     </div>
     <div class="searcher-container">
     <form action="{{ url_for('search_companies') }}" method="GET">
@@ -55,34 +54,41 @@
     });
 </script>
 {% endblock %}
-{% block content %}
-<div class="content">
-    <p class="popular"> Najpopularniejsze </p>
-    <div class="company-container">
-     {% for company in companies %}
- <a href="{{ url_for('company', company_id=company.id) }}"> <div class="company-field">
-    <p class="company-content">
-      <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo">
-      &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20; {{ '%.1f' % (company.opinions / company.number_of_opinions) }}
-      {% set rating = company.opinions / company.number_of_opinions %}
-      {% set stars_count = rating|round|int %}
-      {% if rating >= 0 and rating <= 5 %}
-        {% for _ in range(stars_count) %}
-          <i class="fas fa-star"></i>
-        {% endfor %}
-        {% for _ in range(5 - stars_count) %}
-          <i class="far fa-star"></i>
-        {% endfor %}
-      {% endif %}
-    </p>
- </div></a>
-{% endfor %}
+ <div class="login-content">
 
-    </div>
-</div>
-{% endblock %}
+<h1>Wszystkie kategorie</h1>
+
+{% if category_dict %}
+    <ul>
+        {% for category, companies in category_dict.items() %}
+            <li>
+                <span class="category-name">{{ category }}</span>
+                {% if companies %}
+                    <ul>
+                        {% for company in companies %}
+                            <li>
+                                <a href="{{ url_for('company', company_id=company.id) }}">
+                                    <div class="categories-list">
+                                    <span><img src="{{ company.image_path }}" class="firm-logo">  &#20; {{ company.name }}</span>
+                                </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Brak firm w tej kategorii.</p>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Brak kategorii.</p>
+{% endif %}
+
+
 <div class="footer">
         <p class="footer-content">Footer</p>
 </div>
+
 </body>
 </html>

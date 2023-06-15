@@ -17,7 +17,7 @@
         <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
     </div>
     <div>
-        <button class="category">Kategorie</button>
+        <a href="{{ url_for('category') }}"><button class="category">Kategorie</button></a>
     </div>
     <div class="searcher-container">
     <form action="{{ url_for('search_companies') }}" method="GET">
@@ -62,7 +62,7 @@
     <div class="company-searched-field">
               <a href="{{ url_for('company', company_id=company.id) }}">  <p class="company-content">
 <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo">
-                    &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20; {{ company.opinions / company.number_of_opinions }}
+                    &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20; {{ '%.1f' % (company.opinions / company.number_of_opinions) }}
                     {% set rating = company.opinions / company.number_of_opinions %}
                     {% set stars_count = rating|round|int %}
                     {% if rating >= 0 and rating <= 5 %}
