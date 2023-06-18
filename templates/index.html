@@ -14,35 +14,32 @@
     <div class="logo">
         <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
     </div>
-    <div>
-        <div>
-    <a href="{{ url_for('category') }}"><button class="category">Kategorie</button></a>
-</div>
-    </div>
-    <div class="searcher-container">
-    <form action="{{ url_for('search_companies') }}" method="GET">
-        <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
-        <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
-    </form>
-</div>
-
-    <div class="current-user">
-    {% if current_user.is_authenticated %}
-        <span>Welcome, {{ current_user.nickName }}</span>
-    {% endif %}
-</div>
+            <a href="{{ url_for('category') }}">
+                <button class="category">Kategorie</button>
+            </a>
+            <div class="searcher-container">
+                <form action="{{ url_for('search_companies') }}" method="GET">
+                    <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
+                    <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
+                </form>
+            </div>
     <div class="account">
-        <img src="../static/img/user.png" alt="user" class="account-icon">
-    </div>
-     <div id="account-dropdown" class="account-dropdown">
-        <div class="dropdown-content">
+        <div class="account-info">
             {% if current_user.is_authenticated %}
+            <span class="current-user" data-nickname="{{ current_user.nickName }}"> </span>
+            {% endif %}
+            <img src="../static/img/user.png" alt="user" class="account-icon">
+        </div>
+        <div id="account-dropdown" class="account-dropdown">
+            <div class="dropdown-content">
+                {% if current_user.is_authenticated %}
                 <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
                 <a href="{{ url_for('account') }}" class="account-button">Konto</a>
-            {% else %}
+                {% else %}
                 <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
                 <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
@@ -57,32 +54,57 @@
 {% endblock %}
 {% block content %}
 <div class="content">
-    <p class="popular"> Najpopularniejsze </p>
+    <h1 class="popular">Najpopularniejsze</h1>
     <div class="company-container">
      {% for company in companies %}
- <a href="{{ url_for('company', company_id=company.id) }}"> <div class="company-field">
-    <p class="company-content">
+ <a href="{{ url_for('company', company_id=company.id) }}">
+     <div class="company-field">
+         <div id="SoftContentList">
+  <div class="company-name">
       <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo">
-      &#20; {{ company.name }} &#20; {{ company.number_of_opinions }} &#20; {{ '%.1f' % (company.opinions / company.number_of_opinions) }}
-      {% set rating = company.opinions / company.number_of_opinions %}
-      {% set stars_count = rating|round|int %}
-      {% if rating >= 0 and rating <= 5 %}
-        {% for _ in range(stars_count) %}
-          <i class="fas fa-star"></i>
-        {% endfor %}
-        {% for _ in range(5 - stars_count) %}
-          <i class="far fa-star"></i>
-        {% endfor %}
-      {% endif %}
-    </p>
- </div></a>
+
+  </div>
+  <div class="company-opinions">Opinie: {{ company.number_of_opinions }}</div>
+  <div class="company-rating">
+    {{ '%.1f' % (company.opinions / company.number_of_opinions) }}
+    {% set rating = company.opinions / company.number_of_opinions %}
+    {% set stars_count = rating|round|int %}
+    {% if rating >= 0 and rating <= 5 %}
+      {% for _ in range(stars_count) %}
+        <i class="fas fa-star"></i>
+      {% endfor %}
+      {% for _ in range(5 - stars_count) %}
+        <i class="far fa-star"></i>
+      {% endfor %}
+    {% endif %}
+  </div>
+             </div>
+</div>
+</a>
 {% endfor %}
 
     </div>
 </div>
 {% endblock %}
 <div class="footer">
-        <p class="footer-content">Footer</p>
+    <p class="footer-content">©2023 Firmex, Projekt Python (PTN). Wszelkie prawa zastrzeżone.<a href="regulamin" target="_blank">Regulamin</a> </p>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let nicknameElement = document.querySelector(".current-user");
+    let nickname = nicknameElement.dataset.nickname;
+
+    let typed = new Typed(nicknameElement, {
+      strings: ["Witaj", "Witaj" + " "+ "<b>" + nickname + "!" + "</b>"],
+      typeSpeed: 150,
+      cursorChar: "_"
+    });
+    setTimeout(function() {
+      typed.cursor.classList.add("typed-cursor-hidden");
+    }, 10000);
+  });
+</script>
+
 </body>
 </html>

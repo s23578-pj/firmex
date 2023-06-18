@@ -1,195 +1,52 @@
 @import url('https://fonts.googleapis.com/css2?family=Unica+One&display=swap');
 
-.nav{
-    position: absolute;
+html, body {
+    height: 100%;
     width: 100%;
-    height: 250px;
-    left: 0;
-    top: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.nav {
+    position: relative;
+    height: 150px;
     border-bottom: lightgrey 1px solid;
+    display: flex;
+    justify-content: center; /* Wyśrodkowanie wzdłuż osi X */
+    align-items: center; /* Wyśrodkowanie wzdłuż osi Y */
 }
-.logo{
-    position: absolute;
-    left: 20px;
-    top: 28px;
-}
-.company-logo{
-    width: 500px;
-    height: 200px;
-}
-.category{
-    position: absolute;
-    left: 570px;
-    top: 90px;
 
-    font-family: 'Unica One';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 48px;
-    line-height: 76px;
-    text-align: center;
-
-    color: #2BB1E2;
-    background-color: transparent;
-    border: none;
-}
-.category:hover{
-    border: 1px solid black;
-}
-.searcher-container{
+.logo {
     position: absolute;
-    left: 1000px;
-    top: 97px;
+    left: 15px;
+    top: 8px;
+    z-index: 2;
 }
-.searcher-input{
-    padding: 9px 4px 9px 40px;
-    border: 1px solid lightgrey;
-    width: 500px;
-    height: 62px;
-    font-family: 'Unica One';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 38px;
-    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 13px center;
-}
-.search_button{
-height: 62px;
-    width:70px;
-    background-color: white;
+
+.company-logo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
     border: lightgrey 2px solid;
 }
-.account{
-    position: absolute;
-    left: 1720px;
-    top: 91px
-}
-.account-icon{
-    width: 70px;
-    height: 70px;
-}
-.account-icon:hover{
-    transform: scale(1.10);
-    transition: transform 0.2s ease;
-}
-#account-dropdown {
-    display: none;
-    position: absolute;
-    z-index: 2;
-    top: 180px;
-    left: 1680px;
-    background-color: #f1f1f1;
-    padding: 10px;
-}
 
-.dropdown-content {
-    display: flex;
-    flex-direction: column;
-}
-
-.login,
-.register, .account-button, .logout {
-    padding: 5px 10px;
-    margin-bottom: 5px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: 'Unica One';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 38px;
-    color: #2BB1E2;
-    text-decoration: none;
-}
-
-.login:hover {
-    background-color: #e7e7e7;
-}
-
-.register:hover {
-    background-color: #e7e7e7;
-}
-.account-button:hover {
-    background-color: #e7e7e7;
-}
-
-.logout:hover {
-    background-color: #e7e7e7;
-}
-.content{
-    position: absolute;
-    width: 100%;
-    height: 720px;
-    left: 0px;
-    top: 250px;
-    border-bottom: lightgrey 1px solid
-}
-.popular{
-    position: absolute;
-    left: 700px;
-    top: 5px;
-
-    font-family: 'Unica One';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 64px;
-    line-height: 76px;
-    text-align: center;
-
-    color: #2BB1E2;
-    margin-bottom: 0;
-
-}
-.company-container{
-    position: absolute;
-    width: 850px;
-    height: auto;
-    left: 540px;
-    top: 180px;
-}
-
-.firm-logo{
-    width: 80px;
-    height: 30px;
-    top: 5px;
-}
-.company-field{
-    border: lightgrey 1px solid;
+.category {
     font-family: 'Unica One';
     font-style: normal;
     font-weight: 400;
     font-size: 40px;
-
-    color: #2BB1E2;
-    text-align: center;
-    max-height: 300px;
-}
-.company-content {
-    margin: 25px 0 0 0;
-}
-.footer{
-    position: fixed;
-    top: 930px;
-    width: 100%;
-    height: 350px;
-    text-align: center;
-    margin: 70px 0 0 0;
-}
-.footer-content{
-
-}
-.current-user{
-    font-family: 'Unica One';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 34px;
     line-height: 76px;
-    text-align: center;
-    color: black;
-    height: 100px;
+    color: #2BB1E2;
+    background-color: transparent;
+    border: none;
+    margin-right: 20px;
+
 }
+
+.category:hover {
+    border: 1px solid black;
+}
+
 a{
     text-decoration: none;
 }
@@ -208,4 +65,298 @@ a{
     font-size: 30px;
     line-height: 76px;
     color: black;
+}
+
+.categoryLi{
+    width: 100%;
+}
+ul, li {
+        list-style-type: none;
+}
+.company-display-wrap {
+    display:flex;
+    flex-wrap: wrap;
+}
+/* TYLKO DLA PODSTRONY CATEGORY */
+.categories-list-category {
+    display: flex;
+    flex-direction: row;
+}
+
+.styleForCategoryCompanyLogo {
+    border: 1px solid lightgrey;
+    height: 100px;
+    width: auto;
+    margin: 1px 10px 1px 10px;
+}
+
+/* TYLKO DLA PODSTRONY REGULAMIN */
+.category-regulamin {
+    position: absolute;
+    left: 45%;
+    top: 40px;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 76px;
+    text-align: center;
+    color: #2BB1E2;
+    background-color: transparent;
+    border: none;
+}
+.login-content-regulamin {
+    position: absolute;
+    top: 165px;
+    height: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: center;
+    align-items: center;
+        background-color: #2BB1E2;
+}
+
+.login-content {
+    position: relative;
+    padding-bottom: 100px;
+}
+
+#terms {
+    position: relative;
+    text-align: center;
+    height: auto;
+    padding: 5px 20px 100px 0px;
+}
+
+.del li {
+    text-align: left;
+    display: block;
+}
+
+/* KONIEC STYLU PODSTRONY REGULAMIN */
+
+.forget-password:hover,
+.go-register:hover,
+.go-login:hover{
+  border: 1px solid black;
+}
+.searcher-input {
+    padding: 9px 4px 9px 40px;
+    border: 1px solid lightgrey;
+    width: 500px;
+    height: 50px;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 13px center;
+}
+.search_button{
+    height: 50px;
+    width:70px;
+    background-color: white;
+    border: lightgrey 2px solid;
+}
+
+.current-user {
+  font-family: 'Unica One';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 76px;
+  text-align: left;
+  color: black;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.account {
+  position: absolute;
+  right: 20px; /* Ustawienie odstępu od prawej krawędzi strony */
+  top: 40px;
+    z-index: 2;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.account-info {
+    display:flex;
+    padding: 0 0 1em 0;
+    justify-content: flex-end;
+}
+
+.account-icon {
+  width: 70px;
+  height: 70px;
+    padding: 0 0 0 15px;
+  display: inline-block;
+}
+
+.account-icon:hover {
+    transform: scale(1.10);
+    transition: transform 0.2s ease;
+}
+
+#account-dropdown {
+    display: none;
+    z-index: 2;
+    max-width: 170px;
+    background-color: #f1f1f1;
+    padding: 2px;
+}
+
+.dropdown-content {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.typed-cursor {
+    display:flex;
+    align-items: center;
+    padding: 0 15px 0 0;
+}
+
+.typed-cursor-hidden, .typer-cursor-hidden {
+    display: none;
+}
+
+.typer-cursor {
+    display:flex;
+    align-items: revert;
+    padding: 0 15px 0 0;
+}
+
+.login,
+.register, .account-button, .logout {
+    padding: 1px 10px;
+    margin-bottom: 5px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    color: #2BB1E2;
+    text-decoration: none;
+}
+
+.login:hover,
+.register:hover,
+.account-button:hover,
+.logout:hover{
+    background-color: #e7e7e7;
+}
+
+.content {
+    position: relative;
+    width: 100%;
+    justify-content: center; /* Wyśrodkowanie wzdłuż osi X */
+    align-items: center; /* Wyśrodkowanie wzdłuż osi Y */
+}
+
+.popular {
+    font-family: 'Unica One';
+    font-size: 64px;
+    text-align: center;
+    color: #2BB1E2;
+    margin-top: 30px;
+}
+#login-header{
+    text-align: center;
+    font-family: 'Unica One';
+    font-size: 48px;
+    color: #ffffff;
+    font-weight: 400;
+
+}
+.company-container {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 100px;
+}
+
+
+.firm-logo {
+    height: auto;
+    width: auto;
+    object-fit: contain;
+}
+
+.company-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: lightgrey 1px solid;
+  font-family: 'Unica One';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2.5vh;
+  max-font-size: 40px;
+    width: 275px;
+    height: 300px;
+    min-width: 190px;
+    max-width: 2200px;
+  color: #2BB1E2;
+  text-align: center;
+}
+
+.company-field > * {
+  flex-basis: 100%; /* Ustawienie równych szerokości dla każdego elementu */
+  flex-grow: 1; /* Pozwala elementom rozciągać się na całej dostępnej przestrzeni */
+  flex-shrink: 1; /* Pozwala elementom zmniejszać się w przypadku braku miejsca */
+}
+
+.company-field:hover {
+    background: linear-gradient(to top, #cccccc 50%, transparent 50%); /* gradient tła */
+  transition: height 0.3s ease-out;
+}
+
+.company-name {
+  margin: 25px 0;
+}
+
+.company-opinions,
+.company-rating {
+  margin: 25px 0;
+}
+
+.company-content {
+    margin: 25px 0 0 0;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  text-align: center;
+  background-color: #2BB1E2;
+}
+
+.footer-content {
+    position: relative;
+    top: 35%;
+    font-size: 20px;
+}
+
+.account-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px;
+    padding: 10px;
 }

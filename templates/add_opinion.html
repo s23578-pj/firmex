@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="../../static/styles/style.css">
     <link rel="stylesheet" href="../../static/styles/login.css">
     <link rel="stylesheet" href="../../static/styles/company.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
@@ -15,41 +16,39 @@
 </head>
 <body>
 {% block nav %}
-    <div class="nav">
-        <div class="logo">
-            <a href="/"><img src="../../static/img/logo.png" alt="logo" class="company-logo"></a>
-        </div>
-        <div>
-            <a href="{{ url_for('category') }}"><button class="category">Kategorie</button></a>
-        </div>
-        <div class="searcher-container">
-            <form action="{{ url_for('search_companies') }}" method="GET">
-                <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
-                <button type="submit" class="search_button"><img src="../../static/img/search.png" alt="przycisk">
-                </button>
-            </form>
-        </div>
-
-        <div class="current-user">
+<div class="nav">
+    <div class="logo">
+        <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
+    </div>
+            <a href="{{ url_for('category') }}">
+                <button class="category">Kategorie</button>
+            </a>
+            <div class="searcher-container">
+                <form action="{{ url_for('search_companies') }}" method="GET">
+                    <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
+                    <button type="submit" class="search_button"><img src=".././static/img/search.png"></button>
+                </form>
+            </div>
+    <div class="account">
+        <div class="account-info">
             {% if current_user.is_authenticated %}
-                <span>Welcome, {{ current_user.nickName }}</span>
+            <span class="current-user" data-nickname="{{ current_user.nickName }}"> </span>
             {% endif %}
-        </div>
-        <div class="account">
-            <img src="../../static/img/user.png" alt="user" class="account-icon">
+            <img src=".././static/img/user.png" alt="user" class="account-icon">
         </div>
         <div id="account-dropdown" class="account-dropdown">
             <div class="dropdown-content">
                 {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
-                    <a href="{{ url_for('account') }}" class="account-button">Konto</a>
+                <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
+                <a href="{{ url_for('account') }}" class="account-button">Konto</a>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
-                    <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+                <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
+                <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
                 {% endif %}
             </div>
         </div>
     </div>
+</div>
 
     <script>
         $(document).ready(function () {
@@ -86,7 +85,7 @@
             <div id="category4-stars" class="rateyo-container"></div>
             <br>
 
-            <label class="point-title"><img src="../../static/img/comment.png"> &#20; Opinia tekstowa</label>
+            <label class="point-title"><img src=".././static/img/comment.png"> &#20; Opinia tekstowa</label>
             <input type="text" id="content" name="content" required><br><br>
 
             <button type="submit" id="add-opinion-button" class="add-button">Dodaj opinię</button>
@@ -94,7 +93,7 @@
     </div>
 </div>
 <div class="footer">
-    <p class="footer-content">Footer</p>
+    <p class="footer-content"></p>
 </div>
 <script>
     $(document).ready(function () {

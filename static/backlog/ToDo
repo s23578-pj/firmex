@@ -1,9 +1,14 @@
 10.06.2023:
 Do poprawy:
 1.hovery login i register w index.html
-2.content-field (rozmieszczenie elementów idealnie na środku diva) w index.html i innych
+2.content-field (rozmieszczenie elementów idealnie na środku diva) w index.html
 3.footer uzupełnić i ostylować
-4. ostylowac i ogarnać w sumie wszystko xD
-5.dodać stronę z regulaminem i dodać link w RegistrationForm checkbox* (na sam koniec można)
+4. ostylowac i ogarnać register i login
+5.dodać stronę z regulaminem i dodać link w RegistrationForm checkbox* (na sam koniec można) //done
 6.komunikaty po poprawnej rejestracji i zmianie hasła
 7.dodać jeszcze z 10 firm i i po 4 opinie do 2-3 firm
+
+Do debugowania:
+Logo - uciąć białe pola, następnie powiększyć (obecnie jest za małe)
+W regulaminie okno w account button do naprawienia
+

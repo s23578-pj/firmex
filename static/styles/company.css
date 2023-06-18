@@ -41,11 +41,17 @@
 
 .opinion-content{
     font-family: 'Unica One';
+    width: 100%;
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
-    line-height: 76px;
-    color: white;
+    line-height: 36px;
+    text-align: center;
+    color: #2BB1E2;
+    padding: 5px 0px 15px 0px;
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    background-color: #cccccc;
     margin: 0;
 }
 .sort{
@@ -55,16 +61,26 @@
     font-size: 20px;
     line-height: 76px;
     color: #2BB1E2;
+    height: auto;
 }
 .sort-title{
-    color:lightgrey;
+    color:darkgrey;
      font-family: 'Unica One';
     font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
+    font-weight: 800;
+    font-size: 24px;
     line-height: 76px;
-    margin: 0;
+    padding: 20px;
+    margin: 0px 5px 0px 30px;
+    border: lightgrey 3px solid;
 }
+
+.sort-title:hover {
+    background-color: #2BB1E2;
+    color: white;
+    opacity: 1;
+}
+
 .point-title{
     color: white;
     font-family: 'Unica One';

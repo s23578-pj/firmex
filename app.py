@@ -15,6 +15,7 @@ from flask_mail import Message, Mail
 from datetime import datetime
 from flask_wtf.csrf import CSRFProtect
 
+
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 
@@ -31,8 +32,8 @@ login_manager.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587  # or the appropriate port number
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'polskiorzel19@gmail.com'
-app.config['MAIL_PASSWORD'] = 'qagcltdvijdehxso'
+app.config['MAIL_USERNAME'] = 'firmex.zgloszenia@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ufbdtexftqzsdmcg'
 app.config['SECRET_KEY'] = os.urandom(24)
 
 mail = Mail(app)
@@ -102,7 +103,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired()])
     confirmPassword = PasswordField('Confirm Password', validators=[InputRequired()])
     nickName = StringField('Nickname', validators=[InputRequired()])
-    checkbox = BooleanField(Markup('Oświadczam, że znam i akceptuję treść <a href="#">Regulaminu Firmex</a>'),
+    checkbox = BooleanField('Oświadczam, że znam i akceptuję treść Regulaminu Firmex',
                             validators=[validators.DataRequired()])
 
     def validate_email(self, field):
@@ -247,9 +248,14 @@ class DeleteAccountForm(FlaskForm):
 
 @app.route('/')
 def main_page():
-    companies = Company.query.order_by(desc(Company.opinions / Company.number_of_opinions)).limit(5).all()
+    companies = Company.query.order_by(desc(Company.opinions / Company.number_of_opinions)).limit(6).all()
 
     return render_template('index.html', companies=companies, current_user=current_user)
+
+
+@app.route('/regulamin')
+def regulamin():
+    return render_template('regulamin.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -439,6 +445,7 @@ def company(company_id):
 
 
 @app.route('/company/add_opinion/<company_id>', methods=['GET', 'POST'])
+@csrf.exempt  # Wyłącz ochronę CSRF dla tej trasy
 def add_opinion(company_id):
     if not current_user.is_authenticated:
         return redirect(url_for('login'))

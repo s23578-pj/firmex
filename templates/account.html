@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/styles/style.css">
-    <link rel="stylesheet" href="../static/styles/login.css">
     <link rel="stylesheet" href="../static/styles/account.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -12,39 +11,39 @@
 </head>
 <body>
 {% block nav %}
-    <div class="nav">
-        <div class="logo">
-            <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
-        </div>
-        <div>
-            <button class="category">Kategorie</button>
-        </div>
-        <div class="searcher-container">
-            <form action="{{ url_for('search_companies') }}" method="GET">
-                <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
-                <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
-            </form>
-        </div>
-        <div class="current-user">
+<div class="nav">
+    <div class="logo">
+        <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
+    </div>
+            <a href="{{ url_for('category') }}">
+                <button class="category">Kategorie</button>
+            </a>
+            <div class="searcher-container">
+                <form action="{{ url_for('search_companies') }}" method="GET">
+                    <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
+                    <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
+                </form>
+            </div>
+    <div class="account">
+        <div class="account-info">
             {% if current_user.is_authenticated %}
-                <span>Welcome, {{ current_user.nickName }}</span>
+            <span class="current-user" data-nickname="{{ current_user.nickName }}"> </span>
             {% endif %}
-        </div>
-        <div class="account">
             <img src="../static/img/user.png" alt="user" class="account-icon">
         </div>
         <div id="account-dropdown" class="account-dropdown">
             <div class="dropdown-content">
                 {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
-                    <a href="{{ url_for('account') }}" class="account-button">Konto</a>
+                <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
+                <a href="{{ url_for('account') }}" class="account-button">Konto</a>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
-                    <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+                <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
+                <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
                 {% endif %}
             </div>
         </div>
     </div>
+</div>
 
     <script>
         $(document).ready(function () {
@@ -55,35 +54,47 @@
     </script>
 {% endblock %}
 {% block content %}
-    <div class="login-content">
-    <div class="account-container">
-        <div class="data-container">
-            <h1>Moje konto</h1>
-            <p>Witaj, {{ current_user.name }}!</p>
-            <p>Imię: {{ current_user.name }}</p>
-            <p>Nazwisko: {{ current_user.surname }}</p>
-            <p>Email: {{ current_user.email }}</p>
-            <p>Nick: {{ current_user.nickName }}</p>
-
-        </div>
+<div class="data-container">
+    <h1><span class="typer"></span></h1>
+    <p>Imię: {{ current_user.name }}</p>
+    <p>Nazwisko: {{ current_user.surname }}</p>
+    <p>Email: {{ current_user.email }}</p>
+    <p>Nick: {{ current_user.nickName }}</p>
+    <div class="account-actions">
         <div><a href="{{ url_for('last_searches') }}?userId={{ current_user.id }}" class="account-button">Twoje
             wyszukiwania</a></div>
-        </br>
         <div><a href="{{ url_for('your_opinions') }}?userId={{ current_user.id }}" class="account-button">Twoje
             opinie</a></div>
-        <div >
-<form id="delete-account-form" action="{{ url_for('delete_account') }}" method="POST">
-    {{ form.csrf_token }}
-    <button id="delete-account-button" type="submit" class="account-button">Usuń konto</button>
-</form>
-</div>
+        <div>
+            <form id="delete-account-form" action="{{ url_for('delete_account') }}" method="POST">
+                {{ form.csrf_token }}
+                <button id="delete-account-button" type="submit" class="account-button">Usuń konto</button>
+            </form>
+        </div>
     </div>
+</div>
+
 {% endblock %}
-</div>
 <div class="footer">
-    <p class="footer-content">Footer</p>
+    <p class="footer-content"></p>
 
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      let HeaderElement = document.querySelector(".typer");
+      let Header = HeaderElement.dataset.Header;
 
+      let typer = new Typed(HeaderElement, {
+      strings: ["Moje" + " " + "konto"],
+      typeSpeed: 45,
+      cursorChar: "_",
+          showCursor: false,
+    });
+    setTimeout(function() {
+      typer.cursor.classList.add("typer-cursor-hidden");
+    }, 10000);
+  });
+</script>
 </body>
 </html>

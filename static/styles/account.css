@@ -1,9 +1,9 @@
 .account-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
 data-container {
     text-align: center;
@@ -11,24 +11,82 @@ data-container {
     border: 1px solid white;
     border-radius: 5px;
 }
-.last-searched-container{
+
+.last-searched-container {
+
     font-family: 'Unica One';
     font-style: normal;
     font-weight: 400;
     font-size: 40px;
-
     color: white;
     text-align: center;
     max-height: 300px;
 }
-a{
+
+a {
     text-decoration: none;
 }
-.opinions-list{
-     font-family: 'Unica One';
+
+.opinions-list {
+    padding: 0;
+    counter-reset: opinion-counter;
+    border-collapse: collapse;
+    width: auto;
+    border: 1px solid black;
+    margin: 0;
+}
+
+
+.opinions-list li {
+    display: table-row;
+    border-bottom: 2px solid black;
+    background-color: #cccccc;
+    counter-increment: opinion-counter;
+}
+
+.opinions-list li::before {
+    content: counter(opinion-counter) ". ";
+    display: table-cell;
+    font-family: 'Unica One';
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
+    line-height: 36px;
+    text-align: center;
+    color: #ffffff;
+    padding: 5px 10px;
+    background-color: #2BB1E2;
+}
 
-    color: black;
+.opinions-list li p {
+    display: table-cell;
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 36px;
+    text-align: center;
+    color: #2BB1E2;
+    padding: 5px 10px;
+}
+
+.opinions-list li p:first-child {
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.opinions-list li[data-category="pozytywna"] p:first-child {
+    color: green;
+}
+
+.opinions-list li[data-category="neutralna"] p:first-child {
+    color: white;
+}
+
+.opinions-list li[data-category="negatywna"] p:first-child {
+    color: red;
+}
+
+.opinions-list li:nth-child(even) {
+    background-color: #f2f2f2;
 }

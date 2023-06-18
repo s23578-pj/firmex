@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/styles/style.css">
-    <link rel="stylesheet" href="../static/styles/login.css">
     <link rel="stylesheet" href="../static/styles/company.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -16,33 +15,32 @@
     <div class="logo">
         <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
     </div>
-    <div>
-        <a href="{{ url_for('category') }}"><button class="category">Kategorie</button></a>
-    </div>
-    <div class="searcher-container">
-    <form action="{{ url_for('search_companies') }}" method="GET">
-        <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
-        <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
-    </form>
-</div>
-
-    <div class="current-user">
-    {% if current_user.is_authenticated %}
-        <span>Welcome, {{ current_user.nickName }}</span>
-    {% endif %}
-</div>
+            <a href="{{ url_for('category') }}">
+                <button class="category">Kategorie</button>
+            </a>
+            <div class="searcher-container">
+                <form action="{{ url_for('search_companies') }}" method="GET">
+                    <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
+                    <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
+                </form>
+            </div>
     <div class="account">
-        <img src="../static/img/user.png" alt="user" class="account-icon">
-    </div>
-     <div id="account-dropdown" class="account-dropdown">
-        <div class="dropdown-content">
+        <div class="account-info">
             {% if current_user.is_authenticated %}
+            <span class="current-user" data-nickname="{{ current_user.nickName }}"> </span>
+            {% endif %}
+            <img src="../static/img/user.png" alt="user" class="account-icon">
+        </div>
+        <div id="account-dropdown" class="account-dropdown">
+            <div class="dropdown-content">
+                {% if current_user.is_authenticated %}
                 <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
                 <a href="{{ url_for('account') }}" class="account-button">Konto</a>
-            {% else %}
+                {% else %}
                 <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
                 <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
@@ -93,13 +91,14 @@
                 <button id="positive-button" class="category-button">Pozytywne</button>
                 <button id="negative-button" class="category-button">Negatywne</button>
                 <button id="neutral-button" class="category-button">Neutralne</button>
-                        <span class="sort-title">Sortuj według</span>
-                 <select id="sort-select" class="sort">
-        <option value="date_asc">Data dodania (rosnąco)</option>
-        <option value="date_desc">Data dodania (malejąco)</option>
-        <option value="rating_asc">Ocena użytkowników (rosnąco)</option>
-        <option value="rating_desc">Ocena użytkowników (malejąco)</option>
-    </select>
+
+                <span class="sort-title">Sortuj według</span>
+                <select id="sort-select" class="sort">
+                    <option value="date_asc">Data dodania (rosnąco)</option>
+                    <option value="date_desc">Data dodania (malejąco)</option>
+                    <option value="rating_asc">Ocena użytkowników (rosnąco)</option>
+                    <option value="rating_desc">Ocena użytkowników (malejąco)</option>
+                </select>
             </div>
 
             <div class="opinions-container">
@@ -107,9 +106,26 @@
         {% for opinion in opinions %}
         <p class="opinion-content" data-category="{{ opinion.category }}" data-date="{{ opinion.date }}" data-value="{{ opinion.value }}">
             <img src="../static/img/account_profile.png">
-            &#20; {{ opinion.userName }} &#20; {{ opinion.value }} &#20; &#20; &#20; {{ opinion.date }}
+            &#20; <b style="font-weight: bolder; font-size: larger">{{ opinion.userName }} &#20; Ocenił na &#20;
+                        {% if opinion.value %}
+                            {{ opinion.value }}
+                            {% set stars_count = opinion.value|round|int %}
+                            {% for _ in range(stars_count) %}
+                                <i class="fas fa-star"></i>
+                            {% endfor %}
+                            {% for _ in range(5 - stars_count) %}
+                                <i class="far fa-star"></i>
+                            {% endfor %}
+                        {% endif %}
+            &#20; &#20; &#20; {{ opinion.date }} </b>
             <br>
-            {{ opinion.content }}
+            {% if opinion.category == "pozytywna" %}
+                <b style="color: green">{{ opinion.content }}</b>
+            {% elif opinion.category == "neutralna" %}
+                <b style="color: white">{{ opinion.content }}</b>
+            {% elif opinion.category == "negatywna" %}
+                <b style="color: red">{{ opinion.content }}</b>
+            {% endif %}
         </p>
         {% endfor %}
     </div>
@@ -123,9 +139,10 @@
 <script>
  // Funkcja obsługująca kliknięcie przycisku "Wszystkie"
     document.getElementById("all-button").addEventListener("click", function() {
-        // Resetowanie kolorów wszystkich przycisków
+        // // Resetowanie kolorów wszystkich przycisków
         document.querySelectorAll(".category-button").forEach(function(button) {
-            button.style.backgroundColor = "transparent";
+            button.style.backgroundColor = "#2BB1E2";
+            button.style.borderColor = "red";
         });
         // Ustawienie koloru aktywnego dla klikniętego przycisku
         document.getElementById("all-button").style.backgroundColor = "blue";
@@ -140,7 +157,8 @@
     document.getElementById("positive-button").addEventListener("click", function() {
         // Resetowanie kolorów wszystkich przycisków
         document.querySelectorAll(".category-button").forEach(function(button) {
-            button.style.backgroundColor = "transparent";
+            button.style.backgroundColor = "#2BB1E2";
+            button.style.borderColor = "transparent";
         });
         // Ustawienie koloru aktywnego dla klikniętego przycisku
         document.getElementById("positive-button").style.backgroundColor = "blue";
@@ -160,7 +178,8 @@
     document.getElementById("negative-button").addEventListener("click", function() {
         // Resetowanie kolorów wszystkich przycisków
         document.querySelectorAll(".category-button").forEach(function(button) {
-            button.style.backgroundColor = "transparent";
+            button.style.backgroundColor = "#2BB1E2";
+            button.style.borderColor = "transparent";
         });
         // Ustawienie koloru aktywnego dla klikniętego przycisku
         document.getElementById("negative-button").style.backgroundColor = "blue";
@@ -180,7 +199,8 @@
     document.getElementById("neutral-button").addEventListener("click", function() {
         // Resetowanie kolorów wszystkich przycisków
         document.querySelectorAll(".category-button").forEach(function(button) {
-            button.style.backgroundColor = "transparent";
+            button.style.backgroundColor = "#2BB1E2";
+            button.style.borderColor = "transparent";
         });
         // Ustawienie koloru aktywnego dla klikniętego przycisku
         document.getElementById("neutral-button").style.backgroundColor = "blue";
@@ -239,7 +259,7 @@ window.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 <div class="footer">
-        <p class="footer-content">Footer</p>
+        <p class="footer-content"></p>
 </div>
 </body>
 </html>

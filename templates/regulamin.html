@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="../static/styles/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Firmex-terms</title>
+</head>
+<body>
+{% block nav %}
+<div class="nav">
+    <div class="logo">
+        <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
+    </div>
+    <div>
+        <button class="category-regulamin">Regulamin</button>
+    </div>
+    <div class="account">
+        <img src="../static/img/user.png" alt="user" class="account-icon">
+    </div>
+    <div id="account-dropdown" class="account-dropdown">
+        <div class="dropdown-content">
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
+            <a href="#" class="account-button">Konto</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
+            <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.account').click(function () {
+            $('#account-dropdown').toggle();
+        });
+    });
+</script>
+{% endblock %}
+<div class="login-content-regulamin">
+    <div id="terms">
+        <ol>
+            <ul><h2>§ 1 Definicje</h2></ul>
+        </ol>
+        <ol class="del">
+            <li>1. Serwis Firmex.pl - internetowy serwis do wyświetlania opinii najpopularniejszych firm działających w
+                polsce. Powstał na cele przedmiotu studenckiego <b>PTN -> Rok III SEM VI</b>. Portal służy do
+                przeglądania opinii oraz do ich umieszczania.
+            </li>
+            <li>2. Użytkownik – osoba fizyczna, osoba prawna albo jednostka organizacyjna nieposiadająca osobowości
+                prawnej, korzystająca z usług serwisu Firmex.pl, niezależnie od tego, czy dokonała zamieszczenia w
+                serwisie swojego ogłoszenia.
+            </li>
+            <li>3. Administrator danych osobowych lub Administrator - podmiot decydujący o celach i środkach
+                przetwarzania danych osobowych.
+            </li>
+            <li>4. Opinia firmy - zestaw informacji wprowadzany przez serwis Firmex.pl na podstawie badania rynku i
+                popularności na polskim rynku, zawierający dane umożliwiające osobom zainteresowanym udzielenia opinii
+                lub jej obserwacji.
+            </li>
+        </ol>
+        <ol>
+            <ul><h2>§ 2 Zasady działania strony</h2></ul>
+        </ol>
+        <ol class="del">
+            <li>1. Niniejszy regulamin określa zasady korzystania przez użytkowników z usług dostępnych na serwisie
+                internetowym Firmex.pl.
+            </li>
+            <li>2. Właścicielami serwisu Firmex.pl jest cały zarząd, w którego skład wchodzi: <b>Jakub Styn (indeks
+                uczelniany: s22449), Krzysztof Szczypior (indeks uczelniany: s23578), w dalszej części właściciel.</b></li>
+            <li>3. Administratorem danych osobowych jest również właściciel.</li>
+            <li>4. Korzystanie z usług serwisu Firmex.pl jest bezpłatne.</li>
+            <li>5. Dane osobowe Użytkownika są przetwarzane w celu wykorzystania funkcji form dla języka Python, który
+                jest częścią projektu przedmiotu studenckiego PTN oraz danych baz danych.
+            </li>
+            <li>6. Pod rygorem odpowiedzialności prawnej zabronione jest w szczególności, ale nie wyłącznie:</li>
+            <ol class="del">
+                <li>1. Korzystanie przez użytkownika z serwisu Firmex.pl w celach innych niż potrzeby własne,</li>
+                <li>2. Korzystanie przez użytkownika z serwisu Firmex.pl w celach handlowych,</li>
+                <li>3. Dokonywanie jakichkolwiek innych czynności sprzecznych z przepisami prawa.</li>
+            </ol>
+        </ol>
+        <ol>
+            <ul><h2>§ 3 Dopuszczalna treść komentarzy na stronie</h2></ul>
+        </ol>
+        <ol class="del">
+            <li>1. Komentarz/opinia nie może być sprzeczne z normami prawnymi, etycznymi oraz dobrymi obyczajami
+                obowiązującymi w Polsce.
+            </li>
+            <li>2. W szczególności do poprzedniego punktu jest bezględny zakaz używania wulgaryzmów, obelg i innych
+                treści nacechowanych niestosownym językiem wypowiedzi. Pamiętaj, dobra krytyka czy pochwała w opinii nie
+                potrzebuje niecenzuralnych słów!
+            </li>
+            <li>3. Niedozwolone jest umieszczanie w miejscu przeznaczonym na komentarz/opinie jakichkolwiek reklam
+                innych stron internetowych poprzez podanie ich nazwy. Adresy takie będą niezwłocznie usuwane z treści
+                ogłoszeń.
+            </li>
+            <li>4. Właściciel zastrzega sobie prawo usuwania z serwisu Firmex.pl komentarzy/opinii o treści sprzecznej z
+                niniejszym Regulaminem bez uprzedniego powiadomienia użytkownika.
+            </li>
+        </ol>
+        <ol>
+            <ul><h2>§ 4 Postanowienia końcowe</h2></ul>
+        </ol>
+        <ol class="del">
+            <li>1. Korzystanie z usług oferowanych w serwisie Firmex.pl jest jednoznaczne z akceptacją niniejszego
+                Regulaminu.
+            </li>
+            <li>2. Właściciel zastrzega sobie prawo do zmiany treści Regulaminu bez wcześniejszego indywidualnego
+                informowania o tym. Na stronie internetowej zawsze dostępna jest aktualna wersja Regulaminu
+            </li>
+            <li>3. Firmex.pl nie ponosi odpowiedzialności za przerwy w dostępie do serwisu spowodowane awariami łącz
+                telekomunikacyjnych oraz niezbędnymi pracami techniczno-konserwacyjnymi.
+            </li>
+            <li>4. Niniejszy Regulamin obowiązuje od dnia 2023-06-12r.</li>
+            <li>5. W przypadku stwierdzenia publikacji w serwisie opinii, której nie jesteś autorem, lecz zawierającego
+                Twoje dane teleadresowe, napisz do nas na adres: firmex.zgloszenia@gmail.com.
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="footer">
+    <p class="footer-content">©2023 Firmex, Projekt Python (PTN). Wszelkie prawa zastrzeżone.</p>
+</div>
+</body>
+</html>
