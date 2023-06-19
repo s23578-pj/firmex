@@ -15,7 +15,7 @@
         <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
     </div>
             <a href="{{ url_for('category') }}">
-                <button class="category">Kategorie</button>
+                <button class="category" id="category-OnSite">Kategorie</button>
             </a>
             <div class="searcher-container">
                 <form action="{{ url_for('search_companies') }}" method="GET">
@@ -85,7 +85,7 @@
  </div>
 
 <div class="footer">
-        <p class="footer-content"></p>
+    <p class="footer-content">©2023 Firmex, Projekt Python (PTN). Wszelkie prawa zastrzeżone.<a href="regulamin" target="_blank">Regulamin</a> </p>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
 <script>

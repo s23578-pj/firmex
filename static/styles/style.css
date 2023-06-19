@@ -43,6 +43,11 @@ html, body {
 
 }
 
+#category-OnSite {
+    font-weight: bold;
+    font-size: 50px;
+}
+
 .category:hover {
     border: 1px solid black;
 }
@@ -345,6 +350,7 @@ ul, li {
   height: 80px;
   text-align: center;
   background-color: #2BB1E2;
+    color: white;
 }
 
 .footer-content {

@@ -18,17 +18,22 @@
         <button class="category-regulamin">Regulamin</button>
     </div>
     <div class="account">
-        <img src="../static/img/user.png" alt="user" class="account-icon">
-    </div>
-    <div id="account-dropdown" class="account-dropdown">
-        <div class="dropdown-content">
+        <div class="account-info">
             {% if current_user.is_authenticated %}
-            <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
-            <a href="#" class="account-button">Konto</a>
-            {% else %}
-            <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
-            <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+            <span class="current-user" data-nickname="{{ current_user.nickName }}"> </span>
             {% endif %}
+            <img src="../static/img/user.png" alt="user" class="account-icon">
+        </div>
+        <div id="account-dropdown" class="account-dropdown">
+            <div class="dropdown-content">
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('logout') }}" class="logout">Wyloguj</a>
+                <a href="{{ url_for('account') }}" class="account-button">Konto</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="login">Zaloguj</a>
+                <a href="{{ url_for('register') }}" class="register">Zarejestruj</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
@@ -88,7 +93,7 @@
             <ul><h2>§ 3 Dopuszczalna treść komentarzy na stronie</h2></ul>
         </ol>
         <ol class="del">
-            <li>1. Komentarz/opinia nie może być sprzeczne z normami prawnymi, etycznymi oraz dobrymi obyczajami
+            <li>1. Komentarz/opinia nie może być sprzeczna z normami prawnymi, etycznymi oraz dobrymi obyczajami
                 obowiązującymi w Polsce.
             </li>
             <li>2. W szczególności do poprzedniego punktu jest bezględny zakaz używania wulgaryzmów, obelg i innych

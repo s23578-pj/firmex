@@ -14,15 +14,15 @@
     <div class="logo">
         <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
     </div>
-            <a href="{{ url_for('category') }}">
-                <button class="category">Kategorie</button>
-            </a>
-            <div class="searcher-container">
-                <form action="{{ url_for('search_companies') }}" method="GET">
-                    <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
-                    <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
-                </form>
-            </div>
+    <a href="{{ url_for('category') }}">
+        <button class="category">Kategorie</button>
+    </a>
+    <div class="searcher-container">
+        <form action="{{ url_for('search_companies') }}" method="GET">
+            <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
+            <button type="submit" class="search_button"><img src="../static/img/search.png"></button>
+        </form>
+    </div>
     <div class="account">
         <div class="account-info">
             {% if current_user.is_authenticated %}
@@ -56,30 +56,29 @@
 <div class="content">
     <h1 class="popular">Najpopularniejsze</h1>
     <div class="company-container">
-     {% for company in companies %}
- <a href="{{ url_for('company', company_id=company.id) }}">
-     <div class="company-field">
-         <div id="SoftContentList">
-  <div class="company-name">
-      <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo">
-
-  </div>
-  <div class="company-opinions">Opinie: {{ company.number_of_opinions }}</div>
-  <div class="company-rating">
-    {{ '%.1f' % (company.opinions / company.number_of_opinions) }}
-    {% set rating = company.opinions / company.number_of_opinions %}
-    {% set stars_count = rating|round|int %}
-    {% if rating >= 0 and rating <= 5 %}
-      {% for _ in range(stars_count) %}
-        <i class="fas fa-star"></i>
-      {% endfor %}
-      {% for _ in range(5 - stars_count) %}
-        <i class="far fa-star"></i>
-      {% endfor %}
-    {% endif %}
-  </div>
-             </div>
-</div>
+        {% for company in companies %}
+        <a href="{{ url_for('company', company_id=company.id) }}">
+            <div class="company-field">
+                <div id="SoftContentList">
+                    <div class="company-name">
+                        <img src="{{ company.image_path }}" alt="Company Image" class="firm-logo">
+                    </div>
+                    <div class="company-opinions">Opinie: {{ company.number_of_opinions }}</div>
+                    <div class="company-rating">
+                        {{ '%.1f' % (company.opinions / company.number_of_opinions) }}
+                        {% set rating = company.opinions / company.number_of_opinions %}
+                        {% set stars_count = rating|round|int %}
+                        {% if rating >= 0 and rating <= 5 %}
+                        {% for _ in range(stars_count) %}
+                        <i class="fas fa-star"></i>
+                        {% endfor %}
+                        {% for _ in range(5 - stars_count) %}
+                        <i class="far fa-star"></i>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
 </a>
 {% endfor %}
 

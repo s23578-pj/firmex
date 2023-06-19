@@ -58,29 +58,30 @@
     font-family: 'Unica One';
     font-style: normal;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 24px;
     line-height: 76px;
     color: #2BB1E2;
     height: auto;
 }
 .sort-title{
-    color:darkgrey;
-     font-family: 'Unica One';
+    background-color: blue;
+    border: lightgrey 2px solid;
+    font-family: 'Unica One';
     font-style: normal;
-    font-weight: 800;
+    font-weight: 400;
     font-size: 24px;
     line-height: 76px;
-    padding: 20px;
-    margin: 0px 5px 0px 30px;
-    border: lightgrey 3px solid;
-}
-
-.sort-title:hover {
-    background-color: #2BB1E2;
+    text-align: center;
     color: white;
-    opacity: 1;
+    margin: 10px;
 }
-
+#title {
+    color: #2BB1E2 !important;
+    font-size: 40px;
+}
+.company-little-square{
+    color: #2BB1E2;
+}
 .point-title{
     color: white;
     font-family: 'Unica One';
@@ -88,15 +89,33 @@
     font-weight: 400;
     font-size: 24px;
     line-height: 76px;
+      -webkit-text-stroke: 1px blue; /* Safari/Chrome */
+  -moz-text-stroke: 1px blue; /* Firefox */
+  -ms-text-stroke: 1px blue; /* Internet Explorer */
+  text-stroke: 2px blue; /* standardowa składnia */
+  color: transparent; /* aby ukryć oryginalny tekst */
+  background-image: linear-gradient(to right, red, blue); /* gradient jako tło */
+  -webkit-background-clip: text; /* Safari/Chrome */
 }
+
+.rateyo-container:hover .rateyo-selected,
+.rateyo-container:hover .rateyo-hover {
+  color: blue;
+}
+
 .category-title{
-    color: white;
+    color: #2BB1E2;
     font-family: 'Unica One';
     font-style: normal;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 76px;
 }
+
+.rateyo-selected {
+  color: blue !important;
+}
+
 .rateyo-container {
   display: inline-block;
 }
@@ -118,3 +137,13 @@
   color: white;
 }
 
+.description-content {
+    top: 165px;
+    height: auto;
+    padding: 40px;
+    font-size: 20px;
+    font-family: 'Roboto';
+    justify-content: center;
+    align-items: center;
+        background-color: #2BB1E2;
+}

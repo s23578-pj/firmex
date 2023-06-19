@@ -18,15 +18,15 @@
 {% block nav %}
 <div class="nav">
     <div class="logo">
-        <a href="/"><img src="../static/img/logo.png" alt="logo" class="company-logo"></a>
+        <a href="/"><img src="../../static/img/logo.png" alt="logo" class="company-logo"></a>
     </div>
             <a href="{{ url_for('category') }}">
                 <button class="category">Kategorie</button>
             </a>
             <div class="searcher-container">
-                <form action="{{ url_for('search_companies') }}" method="GET">
+                <form action="{{ url_for('search_companies') }}" method="GET" class="search-width">
                     <input class="searcher-input" type="search" name="query" placeholder="Szukaj">
-                    <button type="submit" class="search_button"><img src=".././static/img/search.png"></button>
+                    <button type="submit" class="search_button"><img src="../../static/img/search.png"></button>
                 </form>
             </div>
     <div class="account">
@@ -34,7 +34,7 @@
             {% if current_user.is_authenticated %}
             <span class="current-user" data-nickname="{{ current_user.nickName }}"> </span>
             {% endif %}
-            <img src=".././static/img/user.png" alt="user" class="account-icon">
+            <img src="../../static/img/user.png" alt="user" class="account-icon">
         </div>
         <div id="account-dropdown" class="account-dropdown">
             <div class="dropdown-content">
@@ -58,12 +58,14 @@
         });
     </script>
 {% endblock %}
-<div class="login-content">
-    <h1>Dodaj opinię o firmie</h1>
+
+<div class="login-contentadd">
+    <h1><span class="typer"></span></h1>
     <div>
         <form id="opinion-form" action="/company/add_opinion/{{ company_id }}" method="POST"
-              enctype="multipart/form-data">
-            <span class=point-title>&bigstar; Ocena punktowa</span><br>
+              enctype="multipart/form-data" class="opinion-add">
+
+            <span class=point-title id="title">&bigstar; Ocena punktowa</span><br>
 
             <label class="category-title">Poziom obsługi klienta:</label>
             <input type="hidden" name="category1" id="category1">
@@ -85,15 +87,15 @@
             <div id="category4-stars" class="rateyo-container"></div>
             <br>
 
-            <label class="point-title"><img src=".././static/img/comment.png"> &#20; Opinia tekstowa</label>
-            <input type="text" id="content" name="content" required><br><br>
+            <label class="point-title"><img src="../../static/img/comment.png"> &#20; Opinia tekstowa</label>
+            <input type="text" id="content" name="content" placeholder="Wyraź swoją opinię" required><br><br>
 
             <button type="submit" id="add-opinion-button" class="add-button">Dodaj opinię</button>
         </form>
     </div>
 </div>
 <div class="footer">
-    <p class="footer-content"></p>
+    <p class="footer-content">©2023 Firmex, Projekt Python (PTN). Wszelkie prawa zastrzeżone.<a href="regulamin" target="_blank">Regulamin</a> </p>
 </div>
 <script>
     $(document).ready(function () {
@@ -197,6 +199,23 @@
         });
 
     }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      let HeaderElement = document.querySelector(".typer");
+      let Header = HeaderElement.dataset.Header;
+
+      let typer = new Typed(HeaderElement, {
+      strings: ["Dodaj opinię" + " " + "o tej firmie"],
+      typeSpeed: 45,
+      cursorChar: "_",
+          showCursor: false,
+    });
+    setTimeout(function() {
+      typer.cursor.classList.add("typer-cursor-hidden");
+    }, 10000);
+  });
 </script>
 </body>
 </html>

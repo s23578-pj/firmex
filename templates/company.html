@@ -56,8 +56,8 @@
 {% block company_content %}
     <div class="login-content">
         <div class="company-information-container">
-            <div class="company-little-square">
-                <p class="copany-information-content"><img src="{{ company.image_path }}" alt="Company Logo"
+            <div class="company-little-square"><b>
+                <p class="company-information-content"><img src="{{ company.image_path }}" alt="Company Logo"
                                                            class="firm-logo"> <br/>
                     {{ '%.1f' % (company.opinions / company.number_of_opinions) }}
                     {% set rating = company.opinions / company.number_of_opinions %}
@@ -70,13 +70,11 @@
                             <i class="far fa-star"></i>
                         {% endfor %}
                     {% endif %}
-                    </br>
-                    {{ company.number_of_opinions }} opinii</p>
+
+                   {{ company.number_of_opinions }} opinii</b></p>
             </div>
             <div class="title-and-description">
                 <p class="description-content">
-                    {{ company.name }} - opinie
-                    </br>
                     {{ company.description }}
                 </p>
 
@@ -85,6 +83,13 @@
                 <button class="add-button-opinions"> Opinie</button>
                 <a href="{{ url_for('add_opinion', company_id=company.id) }}"><button class="add-button">Dodaj opinię</button></a>
 
+                <span class="add-button-opinions">Sortuj według</span>
+                <select id="sort-select" class="sort">
+                    <option value="date_asc">Data dodania (rosnąco)</option>
+                    <option value="date_desc">Data dodania (malejąco)</option>
+                    <option value="rating_asc">Ocena użytkowników (rosnąco)</option>
+                    <option value="rating_desc">Ocena użytkowników (malejąco)</option>
+                </select>
             </div>
             <div class="opinions-category">
                 <button id="all-button" class="category-button">Wszystkie</button>
@@ -92,13 +97,6 @@
                 <button id="negative-button" class="category-button">Negatywne</button>
                 <button id="neutral-button" class="category-button">Neutralne</button>
 
-                <span class="sort-title">Sortuj według</span>
-                <select id="sort-select" class="sort">
-                    <option value="date_asc">Data dodania (rosnąco)</option>
-                    <option value="date_desc">Data dodania (malejąco)</option>
-                    <option value="rating_asc">Ocena użytkowników (rosnąco)</option>
-                    <option value="rating_desc">Ocena użytkowników (malejąco)</option>
-                </select>
             </div>
 
             <div class="opinions-container">
@@ -259,7 +257,7 @@ window.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 <div class="footer">
-        <p class="footer-content"></p>
+    <p class="footer-content">©2023 Firmex, Projekt Python (PTN). Wszelkie prawa zastrzeżone.<a href="../../regulamin" target="_blank">Regulamin</a> </p>
 </div>
 </body>
 </html>
